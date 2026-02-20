@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="nickradar — meet people around you. no swiping, no algorithm. just nicknames.">
+  <title>nickradar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Share+Tech&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --green: #00ff41;
+      --green-dim: #1a4d1a;
+      --green-mid: #2a6a2a;
+      --green-bright: #00ff41;
+      --red: #ff3030;
+      --mono: 'Share Tech Mono', 'Courier New', monospace;
+      --sans: 'Share Tech', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--green);
+      font-family: var(--mono);
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* SCANLINES EFFECT */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.95);
+      border-bottom: 1px solid var(--green-dim);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--green);
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .nav-link {
+      background: none;
+      border: none;
+      color: var(--green-mid);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active { color: var(--green); }
+
+    .nav-cta {
+      background: var(--green);
+      color: var(--black);
+      border: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 7px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover { background: #fff; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--green);
+      transition: 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0;
+      background: #000;
+      border-bottom: 1px solid var(--green-dim);
+      padding: 16px 24px;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 999;
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link { font-size: 13px; padding: 10px 0; border-bottom: 1px solid var(--green-dim); }
+    .mobile-menu .nav-link:last-child { border-bottom: none; }
+
+    /* PAGES */
+    .page { display: none; min-height: 100vh; padding-top: 56px; }
+    .page.active { display: block; }
+
+    /* ═══ HOME PAGE ═══ */
+    .hero {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 680px;
+    }
+
+    .hero-label {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--green-mid);
+      margin-bottom: 24px;
+    }
+
+    .hero-logo {
+      font-size: clamp(48px, 12vw, 96px);
+      font-weight: 700;
+      letter-spacing: 8px;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 8px;
+      animation: flicker 4s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.8; }
+      97% { opacity: 1; }
+      98% { opacity: 0.6; }
+      99% { opacity: 1; }
+    }
+
+    .hero-tagline {
+      font-size: clamp(13px, 3vw, 16px);
+      color: var(--green-mid);
+      letter-spacing: 2px;
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+
+    .hero-tagline em {
+      color: var(--green);
+      font-style: normal;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--black);
+      border: none;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: none;
+      color: var(--green);
+      border: 1px solid var(--green-mid);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--green); transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--green-mid);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+    /* STATS BAR */
+    .stats-bar {
+      border-top: 1px solid var(--green-dim);
+      border-bottom: 1px solid var(--green-dim);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--green-dim);
+    }
+
+    .stat {
+      background: var(--black);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 700;
+      color: var(--green);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--green-mid);
+    }
+
+    /* FEATURES */
+    .section {
+      padding: clamp(48px, 8vw, 96px) clamp(24px, 6vw, 80px);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--green-mid);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(24px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 48px;
+      line-height: 1.2;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--green-dim);
+      border: 1px solid var(--green-dim);
+    }
+
+    .feature {
+      background: var(--black);
+      padding: 32px;
+      transition: background 0.2s;
+    }
+
+    .feature:hover { background: #050f05; }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .feature-text {
+      font-size: 12px;
+      color: var(--green-mid);
+      line-height: 1.8;
+    }
+
+    /* ═══ HOW IT WORKS ═══ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--green-dim);
+      border: 1px solid var(--green-dim);
+    }
+
+    .step {
+      background: var(--black);
+      padding: 40px 32px;
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 24px;
+      align-items: start;
+      transition: background 0.2s;
+    }
+
+    .step:hover { background: #050f05; }
+
+    .step-num {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--green-dim);
+      line-height: 1;
+    }
+
+    .step-content {}
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .step-text {
+      font-size: 12px;
+      color: var(--green-mid);
+      line-height: 1.8;
+    }
+
+    .step-text em {
+      color: var(--green);
+      font-style: normal;
+    }
+
+    .divider-line {
+      border: none;
+      border-top: 1px solid var(--green-dim);
+      margin: 48px 0;
+    }
+
+    /* ═══ PRICING ═══ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--green-dim);
+      border: 1px solid var(--green-dim);
+      margin-bottom: 48px;
+    }
+
+    .price-card {
+      background: var(--black);
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    .price-role {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--green-mid);
+      margin-bottom: 16px;
+    }
+
+    .price-amount {
+      font-size: clamp(40px, 8vw, 64px);
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .price-currency {
+      font-size: 20px;
+      vertical-align: super;
+    }
+
+    .price-when {
+      font-size: 11px;
+      color: var(--green-mid);
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    .price-features {
+      list-style: none;
+      text-align: left;
+    }
+
+    .price-features li {
+      font-size: 12px;
+      color: var(--green-mid);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--green-dim);
+      line-height: 1.6;
+    }
+
+    .price-features li::before {
+      content: '→ ';
+      color: var(--green);
+    }
+
+    .pricing-note {
+      font-size: 12px;
+      color: var(--green-mid);
+      line-height: 1.8;
+      border: 1px solid var(--green-dim);
+      padding: 24px 32px;
+    }
+
+    .pricing-note strong { color: var(--green); }
+
+    /* ═══ ABOUT ═══ */
+    .about-text {
+      font-size: clamp(13px, 2vw, 15px);
+      color: var(--green-mid);
+      line-height: 2;
+      margin-bottom: 32px;
+      max-width: 720px;
+    }
+
+    .about-text em { color: var(--green); font-style: normal; }
+
+    .manifesto {
+      border-left: 2px solid var(--green);
+      padding: 24px 32px;
+      margin: 40px 0;
+    }
+
+    .manifesto p {
+      font-size: clamp(16px, 3vw, 22px);
+      color: var(--green);
+      line-height: 1.8;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--green-dim);
+      border: 1px solid var(--green-dim);
+      margin-top: 48px;
+    }
+
+    .value {
+      background: var(--black);
+      padding: 28px;
+    }
+
+    .value-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .value-text {
+      font-size: 11px;
+      color: var(--green-mid);
+      line-height: 1.7;
+    }
+
+    /* ═══ LEGAL ═══ */
+    .legal-nav {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .legal-tab {
+      background: none;
+      border: 1px solid var(--green-dim);
+      color: var(--green-mid);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .legal-tab.active, .legal-tab:hover {
+      background: var(--green);
+      color: var(--black);
+      border-color: var(--green);
+    }
+
+    .legal-content { display: none; }
+    .legal-content.active { display: block; }
+
+    .legal-section {
+      margin-bottom: 40px;
+    }
+
+    .legal-section h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--green);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--green-dim);
+    }
+
+    .legal-section p, .legal-section li {
+      font-size: 12px;
+      color: var(--green-mid);
+      line-height: 1.9;
+      margin-bottom: 8px;
+    }
+
+    .legal-section ul { padding-left: 16px; }
+    .legal-section li::marker { color: var(--green); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--green-dim);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 16px;
+      letter-spacing: 4px;
+      color: var(--green-mid);
+      margin-bottom: 8px;
+    }
+
+    .footer-text {
+      font-size: 10px;
+      color: var(--green-dim);
+      letter-spacing: 1px;
+    }
+
+    /* TERMINAL CURSOR */
+    .cursor::after {
+      content: '▋';
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 48px 1fr; gap: 16px; }
+      .step-num { font-size: 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">nickradar</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">home</button>
+    <button class="nav-link" onclick="showPage('how')">how it works</button>
+    <button class="nav-link" onclick="showPage('pricing')">pricing</button>
+    <button class="nav-link" onclick="showPage('about')">about</button>
+    <button class="nav-link" onclick="showPage('legal')">legal</button>
+    <button class="nav-cta" onclick="goToApp()">[ open app ]</button>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="nav-link" onclick="showPage('home'); toggleMenu()">home</button>
+  <button class="nav-link" onclick="showPage('how'); toggleMenu()">how it works</button>
+  <button class="nav-link" onclick="showPage('pricing'); toggleMenu()">pricing</button>
+  <button class="nav-link" onclick="showPage('about'); toggleMenu()">about</button>
+  <button class="nav-link" onclick="showPage('legal'); toggleMenu()">legal</button>
+  <button class="nav-cta" style="margin-top:8px;" onclick="goToApp()">[ open app ]</button>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PAGE: HOME -->
+<!-- ═══════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-label">// real world connections</div>
+      <div class="hero-logo">nickradar</div>
+      <div class="hero-tagline">
+        you see someone.<br>
+        you want to connect.<br>
+        <em>no app needed. just their nickname.</em>
+      </div>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="goToApp()">[ open app ]</button>
+        <button class="btn-secondary" onclick="showPage('how')">[ how it works ]</button>
+      </div>
+    </div>
+    <div class="hero-scroll">▼ scroll</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-value">€4.50</span>
+      <span class="stat-label">per match</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">48h</span>
+      <span class="stat-label">chat window</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">0</span>
+      <span class="stat-label">algorithms</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">// why nickradar</div>
+    <div class="section-title">anti-tinder.<br>pro-reality.</div>
+    <div class="features-grid">
+      <div class="feature">
+        <span class="feature-icon">⬛</span>
+        <div class="feature-title">no swiping</div>
+        <div class="feature-text">no endless scrolling, no algorithm deciding who you see. you meet someone in real life first — then you connect.</div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">◈</span>
+        <div class="feature-title">the nickname is the key</div>
+        <div class="feature-text">people wear stickers with their nickradar nickname. you see it, you type it. that's it. no QR codes required.</div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">⏱</span>
+        <div class="feature-title">48h ephemeral chat</div>
+        <div class="feature-text">when both say yes, a 48-hour chat opens. enough time to exchange contacts. after that — it disappears.</div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">⬡</span>
+        <div class="feature-title">pay only on match</div>
+        <div class="feature-text">no subscriptions. no freemium traps. seeker pays €3, target pays €1.50 — only when both say yes.</div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">◎</span>
+        <div class="feature-title">target has the power</div>
+        <div class="feature-text">the person being contacted always decides. yes, no, or block. complete control, always.</div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">▣</span>
+        <div class="feature-title">made to disappear</div>
+        <div class="feature-text">our goal is to make ourselves unnecessary. once you're on whatsapp — mission accomplished.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">nickradar</div>
+    <div class="footer-text">© 2026 nickradar — austria</div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PAGE: HOW IT WORKS -->
+<!-- ═══════════════════════════════════ -->
+<div class="page" id="page-how">
+
+  <div class="section">
+    <div class="section-label">// the process</div>
+    <div class="section-title">three steps.<br>one connection.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">spot the sticker</div>
+          <div class="step-text">
+            someone around you is wearing a sticker: <em>NR: john_innsbruck</em><br><br>
+            that's their nickradar nickname. no app required to see it. no QR code scanner needed. just your eyes.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">search the nickname</div>
+          <div class="step-text">
+            open nickradar → type the nickname → see their public profile.<br><br>
+            you see their bio, their location distance. you decide if you want to send a chat request.<br><br>
+            <em>the request includes a short message — make it count. it's almost already paid for.</em>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">they decide</div>
+          <div class="step-text">
+            the target receives your request and message. they have 12 hours to respond.<br><br>
+            <em>YES</em> → both get charged, 48h chat opens immediately.<br>
+            <em>NO</em> → permanently blocked, no charge.<br>
+            <em>no answer</em> → request expires, no charge, you can try again later.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">48 hours to connect</div>
+          <div class="step-text">
+            chat is open for 48 hours. use it to exchange contacts, agree to meet, move to whatsapp.<br><br>
+            <em>after 48h the chat disappears forever.</em> nickradar's job is done.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="section-label">// the sticker</div>
+    <div class="section-title">your nickname.<br>your presence.</div>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-title">wear it</div>
+        <div class="feature-text">stickers, badges, tags on your bag or jacket. your nickname is your signal that you're open to being contacted.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">your rules</div>
+        <div class="feature-text">wearing the sticker doesn't mean you have to say yes to anyone. you always decide who gets through.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">get your sticker</div>
+        <div class="feature-text">go to <em>mynick → show screen</em> in the app to download and print your personal nickradar sticker.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">nickradar</div>
+    <div class="footer-text">© 2026 nickradar — austria</div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PAGE: PRICING -->
+<!-- ═══════════════════════════════════ -->
+<div class="page" id="page-pricing">
+
+  <div class="section">
+    <div class="section-label">// transparent pricing</div>
+    <div class="section-title">pay only<br>when it works.</div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-role">seeker</div>
+        <div class="price-amount"><span class="price-currency">€</span>3.00</div>
+        <div class="price-when">charged only on YES</div>
+        <ul class="price-features">
+          <li>send chat request for free</li>
+          <li>include a personal message</li>
+          <li>charged only if target says YES</li>
+          <li>48h chat access</li>
+          <li>no charge if ignored or declined</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="price-role">target</div>
+        <div class="price-amount"><span class="price-currency">€</span>1.50</div>
+        <div class="price-when">charged only on YES</div>
+        <ul class="price-features">
+          <li>receive requests for free</li>
+          <li>read the message before deciding</li>
+          <li>charged only if you say YES</li>
+          <li>48h chat access</li>
+          <li>block unwanted contacts for free</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="price-role">per match</div>
+        <div class="price-amount"><span class="price-currency">€</span>4.50</div>
+        <div class="price-when">total cost of a match</div>
+        <ul class="price-features">
+          <li>no monthly subscription</li>
+          <li>no freemium limitations</li>
+          <li>no hidden fees</li>
+          <li>credit card required to register</li>
+          <li>automatic charge on match</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pricing-note">
+      <strong>// why both pay?</strong><br><br>
+      if only the seeker paid, a target could say YES to everyone and collect money. if only the target paid, a seeker could spam everyone for free.<br><br>
+      when <strong>both pay</strong>, both have skin in the game. nobody exploits the system. every YES means something real.
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">nickradar</div>
+    <div class="footer-text">© 2026 nickradar — austria</div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PAGE: ABOUT -->
+<!-- ═══════════════════════════════════ -->
+<div class="page" id="page-about">
+
+  <div class="section">
+    <div class="section-label">// our story</div>
+    <div class="section-title">built for the<br>real world.</div>
+
+    <div class="about-text">
+      nickradar was born from a simple frustration: you meet someone interesting — on the train, at a café, at an event — and there's no respectful way to say <em>"I'd like to stay in touch."</em>
+    </div>
+    <div class="about-text">
+      dating apps put you in a digital bubble, swiping through profiles of people you've never met. nickradar flips this completely: <em>you meet first, then you connect digitally.</em> the physical world comes first.
+    </div>
+
+    <div class="manifesto">
+      <p>"the app that wants to make itself unnecessary."</p>
+    </div>
+
+    <div class="about-text">
+      our mission is simple: bridge the gap between a real-world encounter and a digital connection — then get out of the way. once you're on whatsapp, we've done our job.
+    </div>
+
+    <div class="about-text">
+      nickradar is bootstrapped, based in austria, and built with the EU's values in mind: <em>privacy first, transparency always, no dark patterns.</em>
+    </div>
+
+    <div class="values-grid">
+      <div class="value">
+        <div class="value-title">physical → digital</div>
+        <div class="value-text">real encounters come first. the app is the bridge, not the destination.</div>
+      </div>
+      <div class="value">
+        <div class="value-title">no algorithm</div>
+        <div class="value-text">we don't decide who you meet. reality does.</div>
+      </div>
+      <div class="value">
+        <div class="value-title">privacy by design</div>
+        <div class="value-text">no public profiles, no location tracking, no data selling.</div>
+      </div>
+      <div class="value">
+        <div class="value-title">fair economics</div>
+        <div class="value-text">money flows only when both sides benefit. no exploitation.</div>
+      </div>
+      <div class="value">
+        <div class="value-title">eu made</div>
+        <div class="value-text">built in austria, gdpr compliant, no american data practices.</div>
+      </div>
+      <div class="value">
+        <div class="value-title">bootstrapped</div>
+        <div class="value-text">no investors, no pressure to grow at any cost. we grow when it makes sense.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">nickradar</div>
+    <div class="footer-text">© 2026 nickradar — austria</div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- PAGE: LEGAL -->
+<!-- ═══════════════════════════════════ -->
+<div class="page" id="page-legal">
+
+  <div class="section">
+    <div class="section-label">// legal</div>
+    <div class="section-title">transparency<br>is non-negotiable.</div>
+
+    <div class="legal-nav">
+      <button class="legal-tab active" onclick="showLegal('impressum')">Impressum</button>
+      <button class="legal-tab" onclick="showLegal('datenschutz')">Datenschutz</button>
+      <button class="legal-tab" onclick="showLegal('agb')">AGB</button>
+    </div>
+
+    <!-- IMPRESSUM -->
+    <div class="legal-content active" id="legal-impressum">
+      <div class="legal-section">
+        <h3>Angaben gemäß § 5 ECG</h3>
+        <p>nickradar<br>
+        Österreich<br>
+        E-Mail: info@nickradar.com</p>
+      </div>
+      <div class="legal-section">
+        <h3>Haftungsausschluss</h3>
+        <p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+      </div>
+    </div>
+
+    <!-- DATENSCHUTZ -->
+    <div class="legal-content" id="legal-datenschutz">
+      <div class="legal-section">
+        <h3>Verantwortlicher</h3>
+        <p>nickradar, Österreich — info@nickradar.com</p>
+      </div>
+      <div class="legal-section">
+        <h3>Welche Daten wir speichern</h3>
+        <ul>
+          <li>Nickname, E-Mail-Adresse, Geburtsdatum bei Registrierung</li>
+          <li>IP-Adresse bei Registrierung (Sicherheitszwecke)</li>
+          <li>Standortdaten bei der Nutzung (nur zur Distanzberechnung)</li>
+          <li>Zahlungsdaten werden von Stripe verarbeitet (wir speichern keine Kartendaten)</li>
+          <li>Chatnachrichten (90 Tage für rechtliche Zwecke, danach gelöscht)</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>Rechtsgrundlage</h3>
+        <p>Die Verarbeitung erfolgt auf Basis von Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) und Art. 6 Abs. 1 lit. f DSGVO (berechtigte Interessen).</p>
+      </div>
+      <div class="legal-section">
+        <h3>Ihre Rechte</h3>
+        <ul>
+          <li>Auskunft über gespeicherte Daten (Art. 15 DSGVO)</li>
+          <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
+          <li>Löschung Ihrer Daten (Art. 17 DSGVO)</li>
+          <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
+        </ul>
+        <p>Anfragen an: info@nickradar.com</p>
+      </div>
+      <div class="legal-section">
+        <h3>Drittanbieter</h3>
+        <p>Wir verwenden Stripe für die Zahlungsabwicklung. Stripe verarbeitet Ihre Zahlungsdaten gemäß der Stripe Datenschutzrichtlinie (stripe.com/privacy).</p>
+      </div>
+    </div>
+
+    <!-- AGB -->
+    <div class="legal-content" id="legal-agb">
+      <div class="legal-section">
+        <h3>1. Geltungsbereich</h3>
+        <p>Diese AGB gelten für die Nutzung der nickradar-Plattform (nickradar.com). Mit der Registrierung akzeptieren Sie diese Bedingungen.</p>
+      </div>
+      <div class="legal-section">
+        <h3>2. Registrierung</h3>
+        <ul>
+          <li>Mindestalter: 18 Jahre</li>
+          <li>Kreditkarte erforderlich (wird bei Registrierung hinterlegt)</li>
+          <li>Ein Account pro Person</li>
+          <li>Nickname muss eindeutig und nicht anstößig sein</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>3. Preise und Zahlung</h3>
+        <p>Seeker: €3,00 pro Match. Target: €1,50 pro Match. Zahlung erfolgt automatisch bei gegenseitigem YES. Keine Rückerstattung nach erfolgtem Match.</p>
+      </div>
+      <div class="legal-section">
+        <h3>4. Nutzungsregeln</h3>
+        <ul>
+          <li>Keine Belästigung, kein Spam, kein Missbrauch</li>
+          <li>Keine falschen Angaben zur eigenen Person</li>
+          <li>Keine kommerziellen Aktivitäten ohne Genehmigung</li>
+          <li>Verstöße führen zur sofortigen Sperrung</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>5. Haftung</h3>
+        <p>nickradar haftet nicht für Schäden, die durch die Nutzung der Plattform entstehen. Wir sind eine Vermittlungsplattform und keine Partei der Kontakte zwischen Nutzern.</p>
+      </div>
+      <div class="legal-section">
+        <h3>6. Kündigung</h3>
+        <p>Sie können Ihren Account jederzeit in der App unter Einstellungen löschen. Wir behalten uns vor, Accounts bei Verstößen gegen diese AGB zu sperren.</p>
+      </div>
+      <div class="legal-section">
+        <h3>7. Anwendbares Recht</h3>
+        <p>Es gilt österreichisches Recht. Gerichtsstand ist Österreich.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">nickradar</div>
+    <div class="footer-text">© 2026 nickradar — austria</div>
+  </footer>
+
+</div>
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(function(l) {
+      if (l.textContent.trim() === name || (name === 'how' && l.textContent.includes('how'))) {
+        l.classList.add('active');
+      }
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function showLegal(tab) {
+    document.querySelectorAll('.legal-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelectorAll('.legal-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.getElementById('legal-' + tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+
+  function goToApp() {
+    window.location.href = 'https://app.nickradar.com';
+  }
+</script>
+
+</body>
+</html>
