@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="nickradar — meet people around you. no swiping, no algorithm. just nicknames.">
-  <title>nickradar</title>
+
+  <!-- META: www.nickradar.com -->
+  <meta name="description" content="nickradar — contact people you see in real life. no swiping, no algorithm. you see a nickname, you type it, you try. real world first.">
+  <meta name="keywords" content="nickradar, contacting, real life, nickname, connect, austria, no swiping">
+  <meta name="author" content="nickradar">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="nickradar — real world contacting">
+  <meta property="og:description" content="you see someone. you see their nickname. you try. that's it. no algorithm. no swiping. just real life.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nickradar.com">
+  <meta property="og:site_name" content="nickradar">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="nickradar — real world contacting">
+  <meta name="twitter:description" content="you see someone. you see their nickname. you try. real life first, digital second.">
+
+  <title>nickradar — real world contacting</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Share+Tech&display=swap" rel="stylesheet">
   <style>
@@ -20,7 +38,6 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -31,7 +48,6 @@
       cursor: default;
     }
 
-    /* SCANLINES EFFECT */
     body::after {
       content: '';
       position: fixed;
@@ -141,7 +157,7 @@
     .page { display: none; min-height: 100vh; padding-top: 56px; }
     .page.active { display: block; }
 
-    /* ═══ HOME PAGE ═══ */
+    /* ═══ HOME ═══ */
     .hero {
       min-height: calc(100vh - 56px);
       display: flex;
@@ -199,7 +215,7 @@
       color: var(--green-mid);
       letter-spacing: 2px;
       margin-bottom: 48px;
-      line-height: 1.6;
+      line-height: 1.8;
     }
 
     .hero-tagline em {
@@ -256,7 +272,6 @@
 
     @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-    /* STATS BAR */
     .stats-bar {
       border-top: 1px solid var(--green-dim);
       border-bottom: 1px solid var(--green-dim);
@@ -287,7 +302,6 @@
       color: var(--green-mid);
     }
 
-    /* FEATURES */
     .section {
       padding: clamp(48px, 8vw, 96px) clamp(24px, 6vw, 80px);
       max-width: 1200px;
@@ -374,8 +388,6 @@
       line-height: 1;
     }
 
-    .step-content {}
-
     .step-title {
       font-size: 16px;
       font-weight: 700;
@@ -390,10 +402,7 @@
       line-height: 1.8;
     }
 
-    .step-text em {
-      color: var(--green);
-      font-style: normal;
-    }
+    .step-text em { color: var(--green); font-style: normal; }
 
     .divider-line {
       border: none;
@@ -432,10 +441,7 @@
       margin-bottom: 4px;
     }
 
-    .price-currency {
-      font-size: 20px;
-      vertical-align: super;
-    }
+    .price-currency { font-size: 20px; vertical-align: super; }
 
     .price-when {
       font-size: 11px;
@@ -444,10 +450,7 @@
       margin-bottom: 24px;
     }
 
-    .price-features {
-      list-style: none;
-      text-align: left;
-    }
+    .price-features { list-style: none; text-align: left; }
 
     .price-features li {
       font-size: 12px;
@@ -457,10 +460,7 @@
       line-height: 1.6;
     }
 
-    .price-features li::before {
-      content: '→ ';
-      color: var(--green);
-    }
+    .price-features li::before { content: '→ '; color: var(--green); }
 
     .pricing-note {
       font-size: 12px;
@@ -506,10 +506,7 @@
       margin-top: 48px;
     }
 
-    .value {
-      background: var(--black);
-      padding: 28px;
-    }
+    .value { background: var(--black); padding: 28px; }
 
     .value-title {
       font-size: 12px;
@@ -554,9 +551,7 @@
     .legal-content { display: none; }
     .legal-content.active { display: block; }
 
-    .legal-section {
-      margin-bottom: 40px;
-    }
+    .legal-section { margin-bottom: 40px; }
 
     .legal-section h3 {
       font-size: 13px;
@@ -575,6 +570,7 @@
       margin-bottom: 8px;
     }
 
+    .legal-section a { color: var(--green); }
     .legal-section ul { padding-left: 16px; }
     .legal-section li::marker { color: var(--green); }
 
@@ -598,7 +594,6 @@
       letter-spacing: 1px;
     }
 
-    /* TERMINAL CURSOR */
     .cursor::after {
       content: '▋';
       animation: blink 1s step-end infinite;
@@ -606,7 +601,6 @@
 
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* RESPONSIVE */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .hamburger { display: flex; }
@@ -623,7 +617,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-logo" onclick="showPage('home')">nickradar</div>
   <div class="nav-links">
@@ -639,14 +632,13 @@
   </div>
 </nav>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
   <button class="nav-link" onclick="showPage('home'); toggleMenu()">home</button>
   <button class="nav-link" onclick="showPage('how'); toggleMenu()">how it works</button>
   <button class="nav-link" onclick="showPage('pricing'); toggleMenu()">pricing</button>
   <button class="nav-link" onclick="showPage('about'); toggleMenu()">about</button>
   <button class="nav-link" onclick="showPage('legal'); toggleMenu()">legal</button>
-  <button class="nav-cta" style="margin-top:8px;" onclick="goToApp()">[ open app ]</button>
+  <button class="nav-cta" style="margin-top:8px" onclick="goToApp()">[ open app ]</button>
 </div>
 
 <!-- ═══════════════════════════════════ -->
@@ -657,12 +649,12 @@
   <div class="hero">
     <div class="hero-grid"></div>
     <div class="hero-content">
-      <div class="hero-label">// real world connections</div>
+      <div class="hero-label">// real world. real people. real contact.</div>
       <div class="hero-logo">nickradar</div>
       <div class="hero-tagline">
         you see someone.<br>
-        you want to connect.<br>
-        <em>no app needed. just their nickname.</em>
+        you see their nickname.<br>
+        <em>you try. that's it.</em>
       </div>
       <div class="hero-buttons">
         <button class="btn-primary" onclick="goToApp()">[ open app ]</button>
@@ -674,8 +666,8 @@
 
   <div class="stats-bar">
     <div class="stat">
-      <span class="stat-value">€4.50</span>
-      <span class="stat-label">per match</span>
+      <span class="stat-value">12h</span>
+      <span class="stat-label">contacting window</span>
     </div>
     <div class="stat">
       <span class="stat-value">48h</span>
@@ -689,37 +681,37 @@
 
   <div class="section">
     <div class="section-label">// why nickradar</div>
-    <div class="section-title">anti-tinder.<br>pro-reality.</div>
+    <div class="section-title">real life first.<br>digital second.</div>
     <div class="features-grid">
       <div class="feature">
         <span class="feature-icon">⬛</span>
         <div class="feature-title">no swiping</div>
-        <div class="feature-text">no endless scrolling, no algorithm deciding who you see. you meet someone in real life first — then you connect.</div>
+        <div class="feature-text">no endless profiles, no algorithm deciding who you meet. you meet someone in real life first — then you try to connect. the physical world is the starting point.</div>
       </div>
       <div class="feature">
         <span class="feature-icon">◈</span>
         <div class="feature-title">the nickname is the key</div>
-        <div class="feature-text">people wear stickers with their nickradar nickname. you see it, you type it. that's it. no QR codes required.</div>
+        <div class="feature-text">people show their NR nickname — on stickers, clothing, accessories, vehicles. you see it, you type it. one step. no app needed to spot a nickname.</div>
       </div>
       <div class="feature">
         <span class="feature-icon">⏱</span>
-        <div class="feature-title">48h ephemeral chat</div>
-        <div class="feature-text">when both say yes, a 48-hour chat opens. enough time to exchange contacts. after that — it disappears.</div>
+        <div class="feature-title">only the moment counts</div>
+        <div class="feature-text">a contacting request is valid for 12 hours. if both say yes, a 48-hour chat opens. enough time to exchange contacts. after that — it disappears forever.</div>
       </div>
       <div class="feature">
         <span class="feature-icon">⬡</span>
         <div class="feature-title">pay only on match</div>
-        <div class="feature-text">no subscriptions. no freemium traps. seeker pays €3, target pays €1.50 — only when both say yes.</div>
+        <div class="feature-text">no subscriptions. no freemium limits. no hidden fees. you pay only when both sides genuinely want to connect. no match — no cost. for anyone.</div>
       </div>
       <div class="feature">
         <span class="feature-icon">◎</span>
-        <div class="feature-title">target has the power</div>
-        <div class="feature-text">the person being contacted always decides. yes, no, or block. complete control, always.</div>
+        <div class="feature-title">equal rights. always.</div>
+        <div class="feature-text">seeker and target have the same rights on nickradar. both decide freely — yes, no, or block. no one has more power than the other. fair by design.</div>
       </div>
       <div class="feature">
         <span class="feature-icon">▣</span>
-        <div class="feature-title">made to disappear</div>
-        <div class="feature-text">our goal is to make ourselves unnecessary. once you're on whatsapp — mission accomplished.</div>
+        <div class="feature-title">privacy by default</div>
+        <div class="feature-text">no public profiles visible without login. no data sold. no tracking beyond what's needed. built in austria, gdpr compliant, no dark patterns.</div>
       </div>
     </div>
   </div>
@@ -738,49 +730,61 @@
 
   <div class="section">
     <div class="section-label">// the process</div>
-    <div class="section-title">three steps.<br>one connection.</div>
+    <div class="section-title">simple.<br>direct.<br>real.</div>
 
     <div class="steps">
       <div class="step">
         <div class="step-num">01</div>
         <div class="step-content">
-          <div class="step-title">spot the sticker</div>
+          <div class="step-title">spot the nickname</div>
           <div class="step-text">
-            someone around you is wearing a sticker: <em>NR: john_innsbruck</em><br><br>
-            that's their nickradar nickname. no app required to see it. no QR code scanner needed. just your eyes.
+            someone around you shows their nickradar nickname — on a sticker, a patch, a t-shirt, their phone case, their bike, their bag. anything.<br><br>
+            example: <em>NR: eva_queen_86</em><br><br>
+            that's it. no app needed to spot it. no QR code scanner required. just your eyes and a nickname.
           </div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">02</div>
         <div class="step-content">
-          <div class="step-title">search the nickname</div>
+          <div class="step-title">search in the app</div>
           <div class="step-text">
             open nickradar → type the nickname → see their public profile.<br><br>
-            you see their bio, their location distance. you decide if you want to send a chat request.<br><br>
-            <em>the request includes a short message — make it count. it's almost already paid for.</em>
+            you can check their bio, their approximate location distance. you decide if you want to send a contacting request.<br><br>
+            <em>the request is free to send. you only pay if they say yes.</em>
           </div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">03</div>
         <div class="step-content">
-          <div class="step-title">they decide</div>
+          <div class="step-title">send your contacting request</div>
           <div class="step-text">
-            the target receives your request and message. they have 12 hours to respond.<br><br>
-            <em>YES</em> → both get charged, 48h chat opens immediately.<br>
-            <em>NO</em> → permanently blocked, no charge.<br>
-            <em>no answer</em> → request expires, no charge, you can try again later.
+            your request includes a personal message (10–300 characters) and your current location.<br><br>
+            the person you're contacting receives: your nickname, your profile, your message, and your location at the time of sending.<br><br>
+            <em>make your message count. you have one shot at a first impression.</em>
           </div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">04</div>
         <div class="step-content">
+          <div class="step-title">they respond — or not</div>
+          <div class="step-text">
+            the request stays active for <em>12 hours</em>. three possible outcomes:<br><br>
+            <em>YES</em> → both get charged, 48h chat opens immediately.<br>
+            <em>NO</em> → request denied. permanently blocked, both directions. no charge for anyone.<br>
+            <em>no answer</em> → request expires. no charge. both can try again later.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
           <div class="step-title">48 hours to connect</div>
           <div class="step-text">
-            chat is open for 48 hours. use it to exchange contacts, agree to meet, move to whatsapp.<br><br>
-            <em>after 48h the chat disappears forever.</em> nickradar's job is done.
+            the chat is open for exactly 48 hours. use it to talk, agree to meet, exchange contacts — whatever makes sense.<br><br>
+            <em>after 48h the chat disappears forever.</em> nickradar's job is done. what comes next is up to you.
           </div>
         </div>
       </div>
@@ -788,21 +792,41 @@
 
     <hr class="divider-line">
 
-    <div class="section-label">// the sticker</div>
-    <div class="section-title">your nickname.<br>your presence.</div>
+    <div class="section-label">// your nickname</div>
+    <div class="section-title">show it.<br>anywhere.</div>
 
     <div class="features-grid">
       <div class="feature">
-        <div class="feature-title">wear it</div>
-        <div class="feature-text">stickers, badges, tags on your bag or jacket. your nickname is your signal that you're open to being contacted.</div>
+        <div class="feature-title">your nickname. your medium.</div>
+        <div class="feature-text">sticker, patch, t-shirt, key ring, car sticker, phone case, business card — anything goes. your nickname is your public signal that you're open to being contacted.</div>
       </div>
       <div class="feature">
         <div class="feature-title">your rules</div>
-        <div class="feature-text">wearing the sticker doesn't mean you have to say yes to anyone. you always decide who gets through.</div>
+        <div class="feature-text">showing your nickname doesn't mean you have to say yes to anyone. you always decide who gets through. every request, every time.</div>
       </div>
       <div class="feature">
-        <div class="feature-title">get your sticker</div>
-        <div class="feature-text">go to <em>mynick → show screen</em> in the app to download and print your personal nickradar sticker.</div>
+        <div class="feature-title">get your nickname design</div>
+        <div class="feature-text">go to <em>mynick → print mynick</em> in the app. choose from 8 designs. print on sticker paper or fabric. done.</div>
+      </div>
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="section-label">// nickradar parties</div>
+    <div class="section-title">clubs.<br>events.<br>live.</div>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-title">show screen</div>
+        <div class="feature-text">use the show screen feature in the app at nickradar events and clubs worldwide. your nickname on screen — your signal that you're participating.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">same rules. live setting.</div>
+        <div class="feature-text">the same contacting logic applies. you spot a nickname, you send a request, you wait for a response. only the momentum counts.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">no limits</div>
+        <div class="feature-text">send as many contacting requests as you want. no daily limits, no artificial restrictions. only your judgment and the community rules apply.</div>
       </div>
     </div>
 
@@ -822,7 +846,7 @@
 
   <div class="section">
     <div class="section-label">// transparent pricing</div>
-    <div class="section-title">pay only<br>when it works.</div>
+    <div class="section-title">you pay only<br>when it works.</div>
 
     <div class="pricing-grid">
       <div class="price-card">
@@ -830,10 +854,11 @@
         <div class="price-amount"><span class="price-currency">€</span>3.00</div>
         <div class="price-when">charged only on YES</div>
         <ul class="price-features">
-          <li>send chat request for free</li>
+          <li>registration is free</li>
+          <li>send contacting requests for free</li>
           <li>include a personal message</li>
-          <li>charged only if target says YES</li>
-          <li>48h chat access</li>
+          <li>charged only if the other person says YES</li>
+          <li>48h chat access on match</li>
           <li>no charge if ignored or declined</li>
         </ul>
       </div>
@@ -842,31 +867,40 @@
         <div class="price-amount"><span class="price-currency">€</span>1.50</div>
         <div class="price-when">charged only on YES</div>
         <ul class="price-features">
+          <li>registration is free</li>
           <li>receive requests for free</li>
-          <li>read the message before deciding</li>
+          <li>read message and profile before deciding</li>
           <li>charged only if you say YES</li>
-          <li>48h chat access</li>
-          <li>block unwanted contacts for free</li>
-        </ul>
-      </div>
-      <div class="price-card">
-        <div class="price-role">per match</div>
-        <div class="price-amount"><span class="price-currency">€</span>4.50</div>
-        <div class="price-when">total cost of a match</div>
-        <ul class="price-features">
-          <li>no monthly subscription</li>
-          <li>no freemium limitations</li>
-          <li>no hidden fees</li>
-          <li>credit card required to register</li>
-          <li>automatic charge on match</li>
+          <li>48h chat access on match</li>
+          <li>block is always free</li>
         </ul>
       </div>
     </div>
 
     <div class="pricing-note">
-      <strong>// why both pay?</strong><br><br>
-      if only the seeker paid, a target could say YES to everyone and collect money. if only the target paid, a seeker could spam everyone for free.<br><br>
-      when <strong>both pay</strong>, both have skin in the game. nobody exploits the system. every YES means something real.
+      <strong>// why does both sides pay?</strong><br><br>
+      if only the seeker paid, a target could say YES to everyone without consequences. if only the target paid, seekers could spam for free.<br><br>
+      when <strong>both pay</strong>, both have a real stake in the decision. nobody exploits the system. every YES means something genuine — on both sides. that's what makes nickradar fair.
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="section-label">// what you need</div>
+    <div class="section-title">simple setup.<br>no surprises.</div>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-title">free to register</div>
+        <div class="feature-text">download the app, create your nickname, build your profile — all free. no payment method required until you send your first contacting request.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">payment on first request</div>
+        <div class="feature-text">a valid payment method is required when you send your first contacting request as seeker, or when you say YES as target. we support credit card via Stripe.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">no subscriptions. ever.</div>
+        <div class="feature-text">no monthly fees. no freemium restrictions. no premium tier. you pay per match, and only when a match actually happens. that's the whole model.</div>
+      </div>
     </div>
 
   </div>
@@ -885,25 +919,25 @@
 
   <div class="section">
     <div class="section-label">// our story</div>
-    <div class="section-title">built for the<br>real world.</div>
+    <div class="section-title">built for<br>real life.</div>
 
     <div class="about-text">
-      nickradar was born from a simple frustration: you meet someone interesting — on the train, at a café, at an event — and there's no respectful way to say <em>"I'd like to stay in touch."</em>
+      nickradar started from a simple observation: real life is full of interesting people — on trains, in cafés, at events, in clubs. but there's no respectful, low-pressure way to say <em>"I'd like to stay in touch."</em>
     </div>
     <div class="about-text">
-      dating apps put you in a digital bubble, swiping through profiles of people you've never met. nickradar flips this completely: <em>you meet first, then you connect digitally.</em> the physical world comes first.
+      existing apps put you in a digital bubble before you've ever met anyone. nickradar works the opposite way: <em>you meet first. then you try to connect digitally.</em> the physical world is always the starting point.
     </div>
 
     <div class="manifesto">
-      <p>"the app that wants to make itself unnecessary."</p>
+      <p>"only the moment counts."</p>
     </div>
 
     <div class="about-text">
-      our mission is simple: bridge the gap between a real-world encounter and a digital connection — then get out of the way. once you're on whatsapp, we've done our job.
+      nickradar is not a chat community. it's not a dating app in the traditional sense. it's a <em>contacting platform</em> — built around real encounters, real moments, and a simple nickname that you carry with you into the world.
     </div>
 
     <div class="about-text">
-      nickradar is bootstrapped, based in austria, and built with the EU's values in mind: <em>privacy first, transparency always, no dark patterns.</em>
+      we're bootstrapped, based in austria, and built with eu values: <em>privacy first. transparency always. no dark patterns. no investor pressure.</em>
     </div>
 
     <div class="values-grid">
@@ -916,20 +950,20 @@
         <div class="value-text">we don't decide who you meet. reality does.</div>
       </div>
       <div class="value">
+        <div class="value-title">equal rights</div>
+        <div class="value-text">seeker and target have equal rights. no one is more powerful than the other on this platform.</div>
+      </div>
+      <div class="value">
         <div class="value-title">privacy by design</div>
-        <div class="value-text">no public profiles, no location tracking, no data selling.</div>
+        <div class="value-text">no public profiles without login. no location tracking beyond active sessions. no data sold.</div>
       </div>
       <div class="value">
         <div class="value-title">fair economics</div>
-        <div class="value-text">money flows only when both sides benefit. no exploitation.</div>
+        <div class="value-text">money flows only when both sides genuinely want to connect. no exploitation possible.</div>
       </div>
       <div class="value">
         <div class="value-title">eu made</div>
-        <div class="value-text">built in austria, gdpr compliant, no american data practices.</div>
-      </div>
-      <div class="value">
-        <div class="value-title">bootstrapped</div>
-        <div class="value-text">no investors, no pressure to grow at any cost. we grow when it makes sense.</div>
+        <div class="value-text">built in austria. gdpr compliant. no american data practices. your data stays in europe.</div>
       </div>
     </div>
 
@@ -963,11 +997,19 @@
         <h3>Angaben gemäß § 5 ECG</h3>
         <p>nickradar<br>
         Österreich<br>
-        E-Mail: info@nickradar.com</p>
+        E-Mail: <a href="mailto:hello@nickradar.com">hello@nickradar.com</a></p>
+      </div>
+      <div class="legal-section">
+        <h3>Plattform</h3>
+        <p>nickradar ist eine digitale Contacting-Plattform mit Sitz in Österreich. Die Plattform vermittelt Kontaktversuche zwischen registrierten Nutzern auf Basis von öffentlich sichtbaren Nicknames.</p>
       </div>
       <div class="legal-section">
         <h3>Haftungsausschluss</h3>
-        <p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+        <p>Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. nickradar haftet nicht für Inhalte, die Nutzer auf der Plattform veröffentlichen oder über die Plattform austauschen.</p>
+      </div>
+      <div class="legal-section">
+        <h3>EU-Streitschlichtung</h3>
+        <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank">https://ec.europa.eu/consumers/odr</a></p>
       </div>
     </div>
 
@@ -975,21 +1017,32 @@
     <div class="legal-content" id="legal-datenschutz">
       <div class="legal-section">
         <h3>Verantwortlicher</h3>
-        <p>nickradar, Österreich — info@nickradar.com</p>
+        <p>nickradar, Österreich<br>
+        E-Mail: <a href="mailto:hello@nickradar.com">hello@nickradar.com</a></p>
       </div>
       <div class="legal-section">
         <h3>Welche Daten wir speichern</h3>
         <ul>
           <li>Nickname, E-Mail-Adresse, Geburtsdatum bei Registrierung</li>
+          <li>Optionale Profilinformationen (Bio, Profilbild)</li>
           <li>IP-Adresse bei Registrierung (Sicherheitszwecke)</li>
-          <li>Standortdaten bei der Nutzung (nur zur Distanzberechnung)</li>
-          <li>Zahlungsdaten werden von Stripe verarbeitet (wir speichern keine Kartendaten)</li>
-          <li>Chatnachrichten (90 Tage für rechtliche Zwecke, danach gelöscht)</li>
+          <li>Standortdaten zum Zeitpunkt jeder versendeten Nachricht (zur Distanzanzeige und Verifikation)</li>
+          <li>Zahlungsdaten werden ausschließlich von Stripe verarbeitet — wir speichern keine vollständigen Kartendaten</li>
+          <li>Chatnachrichten (90 Tage für rechtliche Zwecke, danach automatisch gelöscht)</li>
         </ul>
       </div>
       <div class="legal-section">
+        <h3>Standortdaten</h3>
+        <p>Standortdaten werden ausschließlich zum Zeitpunkt des Versendens einer Nachricht erfasst und dem Chat-Partner angezeigt. Dadurch können Nutzer die Echtheit und Intention von Nachrichten in Echtzeit besser einschätzen. Eine kontinuierliche Standortverfolgung findet nicht statt.</p>
+      </div>
+      <div class="legal-section">
         <h3>Rechtsgrundlage</h3>
-        <p>Die Verarbeitung erfolgt auf Basis von Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) und Art. 6 Abs. 1 lit. f DSGVO (berechtigte Interessen).</p>
+        <p>Die Verarbeitung erfolgt auf Basis von Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) und Art. 6 Abs. 1 lit. f DSGVO (berechtigte Interessen). Standortdaten werden auf Grundlage einer ausdrücklichen Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO verarbeitet.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Datenweitergabe</h3>
+        <p>Wir geben keine Nutzerdaten automatisch an Dritte weiter. Ein Datenaustausch findet ausschließlich zwischen den am Chat beteiligten Nutzern statt, auf deren beidseitigem Einvernehmen. Ausnahme: Standortdaten werden innerhalb eines aktiven Chats automatisch an den Chat-Partner übermittelt.</p>
+        <p>Im Falle strafrechtlich relevanter Vorgänge (z.B. Stalking, Belästigung) können Chatverläufe und Standortdaten auf behördliche Anfrage hin offengelegt werden, sofern dies gesetzlich vorgeschrieben ist.</p>
       </div>
       <div class="legal-section">
         <h3>Ihre Rechte</h3>
@@ -997,55 +1050,88 @@
           <li>Auskunft über gespeicherte Daten (Art. 15 DSGVO)</li>
           <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO)</li>
           <li>Löschung Ihrer Daten (Art. 17 DSGVO)</li>
+          <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
           <li>Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
         </ul>
-        <p>Anfragen an: info@nickradar.com</p>
+        <p>Anfragen an: <a href="mailto:hello@nickradar.com">hello@nickradar.com</a></p>
       </div>
       <div class="legal-section">
         <h3>Drittanbieter</h3>
-        <p>Wir verwenden Stripe für die Zahlungsabwicklung. Stripe verarbeitet Ihre Zahlungsdaten gemäß der Stripe Datenschutzrichtlinie (stripe.com/privacy).</p>
+        <p>Wir verwenden <strong>Stripe</strong> für die Zahlungsabwicklung. Stripe verarbeitet Ihre Zahlungsdaten gemäß der Stripe-Datenschutzrichtlinie: <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a></p>
+      </div>
+      <div class="legal-section">
+        <h3>Datensicherheit</h3>
+        <p>Alle Datenübertragungen erfolgen verschlüsselt über HTTPS. Passwörter werden mit bcrypt gehasht und nie im Klartext gespeichert. JWT-Tokens werden für die Authentifizierung verwendet.</p>
       </div>
     </div>
 
     <!-- AGB -->
     <div class="legal-content" id="legal-agb">
       <div class="legal-section">
-        <h3>1. Geltungsbereich</h3>
-        <p>Diese AGB gelten für die Nutzung der nickradar-Plattform (nickradar.com). Mit der Registrierung akzeptieren Sie diese Bedingungen.</p>
+        <h3>§ 1 Geltungsbereich</h3>
+        <p>Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die Nutzung der nickradar-Plattform unter nickradar.com und app.nickradar.com. Mit der Registrierung akzeptieren Sie diese Bedingungen vollständig.</p>
       </div>
       <div class="legal-section">
-        <h3>2. Registrierung</h3>
+        <h3>§ 2 Registrierung</h3>
         <ul>
           <li>Mindestalter: 18 Jahre</li>
-          <li>Kreditkarte erforderlich (wird bei Registrierung hinterlegt)</li>
+          <li>Registrierung und App-Download sind kostenlos</li>
           <li>Ein Account pro Person</li>
-          <li>Nickname muss eindeutig und nicht anstößig sein</li>
+          <li>Nickname muss eindeutig und nicht anstößig sein (max. 20 Zeichen)</li>
+          <li>Eine gültige E-Mail-Adresse ist für die Registrierung erforderlich</li>
+          <li>Ein Zahlungsmittel wird erst beim ersten Contacting Request (Seeker) bzw. beim ersten YES (Target) hinterlegt</li>
         </ul>
       </div>
       <div class="legal-section">
-        <h3>3. Preise und Zahlung</h3>
-        <p>Seeker: €3,00 pro Match. Target: €1,50 pro Match. Zahlung erfolgt automatisch bei gegenseitigem YES. Keine Rückerstattung nach erfolgtem Match.</p>
-      </div>
-      <div class="legal-section">
-        <h3>4. Nutzungsregeln</h3>
+        <h3>§ 3 Preise und Zahlung</h3>
         <ul>
-          <li>Keine Belästigung, kein Spam, kein Missbrauch</li>
-          <li>Keine falschen Angaben zur eigenen Person</li>
-          <li>Keine kommerziellen Aktivitäten ohne Genehmigung</li>
-          <li>Verstöße führen zur sofortigen Sperrung</li>
+          <li>Seeker: €3,00 pro Contacting Request — nur bei gegenseitigem YES fällig</li>
+          <li>Target: €1,50 pro Annahme (YES) — nur bei eigenem YES fällig</li>
+          <li>Kein Match → keine Kosten für keinen der Beteiligten</li>
+          <li>Zahlung erfolgt automatisch über Stripe bei gegenseitigem YES</li>
+          <li>Keine Rückerstattung nach erfolgtem Match und Chatstart</li>
+          <li>Keine Abonnements, keine versteckten Kosten, keine Freemium-Einschränkungen</li>
         </ul>
       </div>
       <div class="legal-section">
-        <h3>5. Haftung</h3>
-        <p>nickradar haftet nicht für Schäden, die durch die Nutzung der Plattform entstehen. Wir sind eine Vermittlungsplattform und keine Partei der Kontakte zwischen Nutzern.</p>
+        <h3>§ 4 Contacting-Regeln</h3>
+        <ul>
+          <li>Contacting Requests bleiben 12 Stunden aktiv</li>
+          <li>Bei gegenseitigem YES öffnet ein 48-stündiger Chat</li>
+          <li>NO: permanente gegenseitige Sperrung, keine weiteren Interaktionen möglich</li>
+          <li>EXPIRED (keine Antwort): keine Kosten, beide Seiten können erneut Requests senden</li>
+          <li>Ignorieren gilt nicht als Ablehnung</li>
+          <li>Accounts ohne Aktivität innerhalb von 6 Monaten werden automatisch gelöscht. Der Nickname wird danach wieder freigegeben.</li>
+        </ul>
       </div>
       <div class="legal-section">
-        <h3>6. Kündigung</h3>
-        <p>Sie können Ihren Account jederzeit in der App unter Einstellungen löschen. Wir behalten uns vor, Accounts bei Verstößen gegen diese AGB zu sperren.</p>
+        <h3>§ 5 Nutzungsregeln</h3>
+        <ul>
+          <li>Keine Belästigung, kein Spam, kein Missbrauch der Plattform</li>
+          <li>Keine falschen Angaben zur eigenen Person</li>
+          <li>Keine kommerziellen Aktivitäten ohne ausdrückliche Genehmigung</li>
+          <li>Kein Teilen illegaler, beleidigender oder diskriminierender Inhalte</li>
+          <li>Jeder Nutzer ist für den Inhalt seiner Nachrichten und seines Profils selbst verantwortlich</li>
+          <li>Verstöße führen zur sofortigen und permanenten Sperrung des Accounts</li>
+        </ul>
       </div>
       <div class="legal-section">
-        <h3>7. Anwendbares Recht</h3>
-        <p>Es gilt österreichisches Recht. Gerichtsstand ist Österreich.</p>
+        <h3>§ 6 Bewusstsein und Eigenverantwortung</h3>
+        <p>Durch das öffentliche Zeigen eines NR-Nicknames erklärt sich der Nutzer ausdrücklich damit einverstanden, über nickradar kontaktiert werden zu können. Nutzern ist bewusst, dass sie durch ein sichtbar getragenes Nickname-Zeichen auch direkt und persönlich, auch von fremden Personen, angesprochen werden könnten.</p>
+        <p>nickradar haftet nicht für Ereignisse, die zwischen Nutzern — oder zwischen Nutzern und Nicht-Nutzern — entstehen. Jeder Nutzer handelt auf eigene Verantwortung.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 7 Haftung der Plattform</h3>
+        <p>nickradar stellt ausschließlich die technische Infrastruktur für Contacting-Versuche zur Verfügung. nickradar ist keine Partei in den Kontakten zwischen Nutzern und haftet nicht für Schäden, die durch die Nutzung der Plattform entstehen. nickradar ist keine Online-Community im klassischen Sinne — Contacting findet live und zeitlich begrenzt statt.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 8 Kündigung und Löschung</h3>
+        <p>Sie können Ihren Account jederzeit in der App unter Einstellungen löschen. Accounts, die innerhalb von 6 Monaten keine Aktivität aufweisen, werden automatisch gelöscht und der Nickname wieder für die Community freigegeben. Eine erneute Registrierung ist jederzeit möglich — der ursprüngliche Nickname kann jedoch vergeben sein.</p>
+        <p>nickradar behält sich vor, Accounts bei Verstößen gegen diese AGB ohne Vorankündigung zu sperren oder zu löschen.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 9 Anwendbares Recht</h3>
+        <p>Es gilt österreichisches Recht unter Ausschluss des UN-Kaufrechts. Gerichtsstand ist Österreich.</p>
       </div>
     </div>
 
@@ -1078,12 +1164,13 @@
     event.target.classList.add('active');
   }
 
-  function toggleMenu() {
-    document.getElementById('mobile-menu').classList.toggle('open');
+  function goToApp() {
+    window.open('https://app.nickradar.com', '_blank');
   }
 
-  function goToApp() {
-    window.location.href = 'https://app.nickradar.com';
+  function toggleMenu() {
+    var menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('open');
   }
 </script>
 
