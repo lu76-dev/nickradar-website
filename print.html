@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nickradar — print</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --black: #000000;
+      --green: #00ff41;
+      --green-dim: #1a4d1a;
+      --mono: 'Share Tech Mono', 'Courier New', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--black);
+      color: var(--green);
+      font-family: var(--mono);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .card {
+      border: 2px solid var(--green-dim);
+      padding: 40px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      background: #050505;
+    }
+    .nr {
+      font-size: 13px;
+      color: var(--green-dim);
+      letter-spacing: 6px;
+      margin-bottom: 10px;
+    }
+    .nickname {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 3px;
+      margin-bottom: 28px;
+      word-break: break-all;
+    }
+    .qr-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .qr-box canvas, .qr-box img {
+      border: 8px solid #fff;
+    }
+    .url {
+      font-size: 10px;
+      color: var(--green-dim);
+      letter-spacing: 2px;
+      margin-top: 12px;
+    }
+    .print-btn {
+      margin-top: 32px;
+      border: 1px solid var(--green);
+      padding: 12px 32px;
+      background: transparent;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .print-btn:hover { background: #0a1a0a; }
+    .error {
+      font-size: 13px;
+      color: #ff3030;
+      text-align: center;
+    }
+    @media print {
+      body { background: #fff; padding: 0; justify-content: flex-start; }
+      .card { border-color: #ccc; background: #fff; margin: 40px auto; }
+      .nr { color: #aaa; }
+      .nickname { color: #000; }
+      .url { color: #aaa; }
+      .print-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const nick = (params.get('nick') || '').trim().toLowerCase();
+    const content = document.getElementById('content');
+
+    if (!nick) {
+      content.innerHTML = '<p class="error">no nickname provided.<br><br>usage: nickradar.com/print.html?nick=yournickname</p>';
+    } else {
+      content.innerHTML = `
+        <div class="card">
+          <div class="nr">NR</div>
+          <div class="nickname" id="nickDisplay"></div>
+          <div class="qr-box" id="qrBox"></div>
+          <div class="url">scan to find ${nick} on nickradar</div>
+        </div>
+        <button class="print-btn" onclick="window.print()">[ PRINT ]</button>
+      `;
+
+      document.getElementById('nickDisplay').textContent = nick;
+      document.title = 'nickradar — ' + nick;
+
+      new QRCode(document.getElementById('qrBox'), {
+        text: 'nickradar:' + nick,
+        width: 200,
+        height: 200,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+  </script>
+</body>
+</html>
