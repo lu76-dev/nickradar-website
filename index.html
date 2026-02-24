@@ -122,10 +122,10 @@
     /* PRICING */
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--green-dim); border: 1px solid var(--green-dim); margin-bottom: 32px; }
     .price-card { background: var(--black); padding: 36px 28px; text-align: center; }
-    .price-role { font-size: 16px; letter-spacing: 1px; color: #ffffff; font-weight: 600; margin-bottom: 12px; }
+    .price-role { font-size: 10px; letter-spacing: 4px; color: var(--green-mid); margin-bottom: 12px; }
     .price-amount { font-size: clamp(36px, 7vw, 60px); font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; }
     .price-currency { font-size: 18px; vertical-align: super; }
-    .price-when { font-size: 11px; color: #ffffff; letter-spacing: 1px; margin-bottom: 20px; }
+    .price-when { font-size: 11px; color: #7abf7a; letter-spacing: 1px; margin-bottom: 20px; }
     .price-features { list-style: none; text-align: left; }
     .price-features li { font-size: 12px; color: #7abf7a; padding: 5px 0; border-bottom: 1px solid var(--green-dim); line-height: 1.6; }
     .price-features li::before { content: '-> '; color: var(--green); }
@@ -171,11 +171,7 @@
       .hero-buttons { flex-direction: column; align-items: center; }
       .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
     }
-    .highlight-role {
-    color: #ffffff;
-    font-weight: 600;
-  }
-</style>
+  </style>
 </head>
 <body>
 
@@ -209,6 +205,7 @@
     <div class="hero-grid"></div>
     <div class="hero-content">
       <div class="hero-label">// real world. real people. real contact.</div>
+      <img src="nr_logo_white.png" style="width:56px;height:56px;object-fit:contain;margin-bottom:16px;opacity:0.9;" />
       <div class="hero-logo">nickradar</div>
       <div class="hero-tagline">
         you see someone.<br>
@@ -216,7 +213,7 @@
         <em>you try. that's it.</em>
       </div>
       <div class="hero-price-hint">
-        <span>3.00 EUR</span> <span class="highlight-role">seeker</span> &nbsp;·&nbsp; <span>1.50 EUR</span> <span class="highlight-role">target</span> &nbsp;·&nbsp; <span>only on match</span>
+        <span>3.00 EUR</span> seeker &nbsp;·&nbsp; <span>1.50 EUR</span> target &nbsp;·&nbsp; <span>only on match</span>
       </div>
       <div class="hero-buttons">
         <button class="btn-primary" onclick="goToApp()">[ open app ]</button>
@@ -227,8 +224,8 @@
   </div>
 
   <div class="stats-bar">
-    <div class="stat"><span class="stat-value">12h</span><span class="stat-label">request time</span></div>
-    <div class="stat"><span class="stat-value">48h</span><span class="stat-label">chat time</span></div>
+    <div class="stat"><span class="stat-value">12h</span><span class="stat-label">request window</span></div>
+    <div class="stat"><span class="stat-value">48h</span><span class="stat-label">chat window</span></div>
     <div class="stat"><span class="stat-value">0</span><span class="stat-label">algorithms</span></div>
     <div class="stat"><span class="stat-value">0</span><span class="stat-label">subscriptions</span></div>
   </div>
@@ -282,7 +279,7 @@
       <div class="feature">
         <span class="feature-icon">◎</span>
         <div class="feature-title">equal rights. always.</div>
-        <div class="feature-text"><span class="highlight-role">seeker</span> and <span class="highlight-role">target</span> have the same rights. both decide freely — yes, no, or block. nobody has more power. fair by design.</div>
+        <div class="feature-text">seeker and target have the same rights. both decide freely — yes, no, or block. nobody has more power. fair by design.</div>
       </div>
     </div>
   </div>
@@ -397,7 +394,7 @@
 
     <div class="pricing-grid">
       <div class="price-card">
-        <div class="price-role"><span class="highlight-role">seeker</span></div>
+        <div class="price-role">seeker</div>
         <div class="price-amount"><span class="price-currency">€</span>3.00</div>
         <div class="price-when">charged only on YES</div>
         <ul class="price-features">
@@ -410,7 +407,7 @@
         </ul>
       </div>
       <div class="price-card">
-        <div class="price-role"><span class="highlight-role">target</span></div>
+        <div class="price-role">target</div>
         <div class="price-amount"><span class="price-currency">€</span>1.50</div>
         <div class="price-when">charged only on YES</div>
         <ul class="price-features">
@@ -426,8 +423,8 @@
 
     <div class="pricing-note">
       <strong>// why do both sides pay?</strong><br><br>
-      if only the <span class="highlight-role">seeker</span> paid, a <span class="highlight-role">target</span> could say YES to everyone without consequences.<br>
-      if only the <span class="highlight-role">target</span> paid, seekers could spam for free.<br><br>
+      if only the seeker paid, a target could say YES to everyone without consequences.<br>
+      if only the target paid, seekers could spam for free.<br><br>
       when <strong>both pay, both are serious.</strong> every YES means something real — on both sides. no exploitation possible. that's what makes nickradar genuinely fair.
     </div>
 
@@ -440,7 +437,7 @@
       </div>
       <div class="feature">
         <div class="feature-title">credit card via stripe</div>
-        <div class="feature-text">payment required when you send your first request (<span class="highlight-role">seeker</span>) or say YES for the first time (<span class="highlight-role">target</span>). secure, handled by Stripe.</div>
+        <div class="feature-text">payment required when you send your first request (seeker) or say YES for the first time (target). secure, handled by Stripe.</div>
         <div style="margin-top:16px;">
           <svg xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" aria-label="Stripe">
             <rect width="60" height="25" rx="4" fill="#635BFF"/>
@@ -496,7 +493,7 @@
       </div>
       <div class="value">
         <div class="value-title">equal rights</div>
-        <div class="value-text"><span class="highlight-role">seeker</span> and <span class="highlight-role">target</span> have equal power. no one can exploit the other.</div>
+        <div class="value-text">seeker and target have equal power. no one can exploit the other.</div>
       </div>
       <div class="value">
         <div class="value-title">privacy by design</div>
@@ -536,12 +533,11 @@
       <div class="legal-section">
         <h3>Legal Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act)</h3>
         <p>
-          nickradar.com — an App of:<br>
-          Luigi La Macchia<br>
+          nickradar.com — an App of Mr. Luigi La Macchia<br>
           Badhausstraße 3<br>
           6080 Innsbruck<br>
           Austria<br><br>
-          Email: <a href="mailto:info@nickradar.com">info@nickradar.com</a><br>
+          Email: <a href="/cdn-cgi/l/email-protection#a9c0c7cfc6e9c7c0cac2dbc8cdc8db87cac6c4"><span class="__cf_email__" data-cfemail="4f262129200f21262c243d2e2b2e3d612c2022">[email&#160;protected]</span></a><br>
           Web: <a href="https://www.nickradar.com">www.nickradar.com</a>
         </p>
       </div>
@@ -570,52 +566,51 @@
       </div>
     </div>
 
-    <!-- PRIVACY POLICY -->
+    <!-- DATENSCHUTZ -->
     <div class="legal-content" id="legal-datenschutz">
       <div class="legal-section">
-        <h3>Data Controller</h3>
-        <p>Luigi La Macchia — nickradar, Innsbruck, Austria<br>
-        <a href="mailto:info@nickradar.com">info@nickradar.com</a></p>
+        <h3>Verantwortlicher</h3>
+        <p>nickradar, Österreich — <a href="/cdn-cgi/l/email-protection#8ce5e2eae3cce2e5efe7feede8edfea2efe3e1"><span class="__cf_email__" data-cfemail="325b5c545d725c5b515940535653401c515d5f">[email&#160;protected]</span></a></p>
       </div>
       <div class="legal-section">
-        <h3>Data We Store</h3>
+        <h3>Welche Daten wir speichern</h3>
         <ul>
-          <li>Nickname, email address, date of birth upon registration</li>
-          <li>Optional profile information (bio, profile picture)</li>
-          <li>IP address at registration (security purposes)</li>
-          <li>Location data at the time of each sent message</li>
-          <li>Payment data processed exclusively by Stripe — we do not store full card details</li>
-          <li>Chat messages (90 days for legal purposes, then automatically deleted)</li>
+          <li>Nickname, E-Mail-Adresse, Geburtsdatum bei Registrierung</li>
+          <li>Optionale Profilinformationen (Bio, Profilbild)</li>
+          <li>IP-Adresse bei Registrierung (Sicherheitszwecke)</li>
+          <li>Standortdaten zum Zeitpunkt jeder versendeten Nachricht</li>
+          <li>Zahlungsdaten ausschließlich über Stripe — wir speichern keine vollständigen Kartendaten</li>
+          <li>Chatnachrichten (90 Tage für rechtliche Zwecke, danach automatisch gelöscht)</li>
         </ul>
       </div>
       <div class="legal-section">
-        <h3>Location Data</h3>
-        <p>Location data is only recorded at the moment a message is sent and shared with the chat partner. No continuous location tracking takes place.</p>
+        <h3>Standortdaten</h3>
+        <p>Standortdaten werden ausschließlich zum Zeitpunkt des Versendens einer Nachricht erfasst und dem Chat-Partner angezeigt. Eine kontinuierliche Standortverfolgung findet nicht statt.</p>
       </div>
       <div class="legal-section">
-        <h3>Legal Basis</h3>
-        <p>Art. 6(1)(b) GDPR (contract performance) and Art. 6(1)(f) GDPR (legitimate interests). Location data on the basis of explicit consent under Art. 6(1)(a) GDPR.</p>
+        <h3>Rechtsgrundlage</h3>
+        <p>Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) und Art. 6 Abs. 1 lit. f DSGVO (berechtigte Interessen). Standortdaten auf Grundlage ausdrücklicher Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO.</p>
       </div>
       <div class="legal-section">
-        <h3>Data Sharing</h3>
-        <p>No automatic sharing with third parties. Data exchange occurs only between active chat participants. Exception: location data is automatically shared with the chat partner during an active chat.</p>
-        <p>In cases of criminal relevance, data may be disclosed to authorities upon legal request.</p>
+        <h3>Datenweitergabe</h3>
+        <p>Keine automatische Weitergabe an Dritte. Austausch findet nur zwischen Chat-Teilnehmern statt. Ausnahme: Standortdaten werden innerhalb eines aktiven Chats automatisch übermittelt.</p>
+        <p>Bei strafrechtlich relevanten Vorgängen können Daten auf behördliche Anfrage offengelegt werden.</p>
       </div>
       <div class="legal-section">
-        <h3>Your Rights</h3>
+        <h3>Ihre Rechte</h3>
         <ul>
-          <li>Access (Art. 15), Rectification (Art. 16), Erasure (Art. 17 GDPR)</li>
-          <li>Restriction (Art. 18), Objection (Art. 21 GDPR)</li>
+          <li>Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17)</li>
+          <li>Einschränkung (Art. 18), Widerspruch (Art. 21 DSGVO)</li>
         </ul>
-        <p>Requests: <a href="mailto:info@nickradar.com">info@nickradar.com</a></p>
+        <p>Anfragen: <a href="/cdn-cgi/l/email-protection#a4cdcac2cbe4cacdc7cfd6c5c0c5d68ac7cbc9"><span class="__cf_email__" data-cfemail="f49d9a929bb49a9d979f8695909586da979b99">[email&#160;protected]</span></a></p>
       </div>
       <div class="legal-section">
-        <h3>Third Parties</h3>
-        <p><strong>Stripe</strong> for payment processing: <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a></p>
+        <h3>Drittanbieter</h3>
+        <p><strong>Stripe</strong> für Zahlungsabwicklung: <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a></p>
       </div>
       <div class="legal-section">
-        <h3>Data Security</h3>
-        <p>All data transfers are encrypted via HTTPS. Passwords are hashed with bcrypt. JWT tokens are used for authentication.</p>
+        <h3>Datensicherheit</h3>
+        <p>HTTPS-Verschlüsselung. Passwörter mit bcrypt gehasht. JWT-Authentifizierung.</p>
       </div>
     </div>
 
@@ -633,14 +628,14 @@
           <li>One account per person</li>
           <li>Nickname must be unique and non-offensive (max. 20 characters)</li>
           <li>A valid email address is required</li>
-          <li>Payment method is only required upon first contacting request (<span class="highlight-role">Seeker</span>) or first YES (<span class="highlight-role">Target</span>)</li>
+          <li>Payment method is only required upon first contacting request (Seeker) or first YES (Target)</li>
         </ul>
       </div>
       <div class="legal-section">
         <h3>§ 3 Pricing and Payment</h3>
         <ul>
-          <li><span class="highlight-role">Seeker</span>: EUR 3.00 per contacting request — charged only on mutual YES</li>
-          <li><span class="highlight-role">Target</span>: EUR 1.50 per acceptance (YES) — charged only on own YES</li>
+          <li>Seeker: EUR 3.00 per contacting request — charged only on mutual YES</li>
+          <li>Target: EUR 1.50 per acceptance (YES) — charged only on own YES</li>
           <li>No match — no cost for either party</li>
           <li>Automatic payment via Stripe upon mutual YES</li>
           <li>No refunds after a successful match and chat start</li>
@@ -695,32 +690,6 @@
   </footer>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   function showPage(name) {
-    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-    document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
-    document.getElementById('page-' + name).classList.add('active');
-    document.querySelectorAll('.nav-link').forEach(function(l) {
-      if (l.textContent.trim() === name || (name === 'how' && l.textContent.includes('how'))) {
-        l.classList.add('active');
-      }
-    });
-    window.scrollTo(0, 0);
-  }
-  function showLegal(tab, e) {
-    if (e) e.preventDefault();
-    document.querySelectorAll('.legal-content').forEach(function(c) { c.classList.remove('active'); });
-    document.querySelectorAll('.legal-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.getElementById('legal-' + tab).classList.add('active');
-    if (e && e.target) e.target.classList.add('active');
-  }
-  function goToApp() {
-    window.location.href = 'https://app.nickradar.com';
-  }
-  function toggleMenu() {
-    var menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('open');
-  }
-</script>
-</body>
-</html>
+    document.querySelectorAll('.pag
