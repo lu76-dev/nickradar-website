@@ -171,7 +171,11 @@
       .hero-buttons { flex-direction: column; align-items: center; }
       .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
     }
-  </style>
+    .highlight-role {
+    color: #ffffff;
+    font-weight: 600;
+  }
+</style>
 </head>
 <body>
 
@@ -212,7 +216,7 @@
         <em>you try. that's it.</em>
       </div>
       <div class="hero-price-hint">
-        <span>3.00 EUR</span> seeker &nbsp;·&nbsp; <span>1.50 EUR</span> target &nbsp;·&nbsp; <span>only on match</span>
+        <span>3.00 EUR</span> <span class="highlight-role">seeker</span> &nbsp;·&nbsp; <span>1.50 EUR</span> <span class="highlight-role">target</span> &nbsp;·&nbsp; <span>only on match</span>
       </div>
       <div class="hero-buttons">
         <button class="btn-primary" onclick="goToApp()">[ open app ]</button>
@@ -278,7 +282,7 @@
       <div class="feature">
         <span class="feature-icon">◎</span>
         <div class="feature-title">equal rights. always.</div>
-        <div class="feature-text">seeker and target have the same rights. both decide freely — yes, no, or block. nobody has more power. fair by design.</div>
+        <div class="feature-text"><span class="highlight-role">seeker</span> and <span class="highlight-role">target</span> have the same rights. both decide freely — yes, no, or block. nobody has more power. fair by design.</div>
       </div>
     </div>
   </div>
@@ -393,7 +397,7 @@
 
     <div class="pricing-grid">
       <div class="price-card">
-        <div class="price-role">seeker</div>
+        <div class="price-role"><span class="highlight-role">seeker</span></div>
         <div class="price-amount"><span class="price-currency">€</span>3.00</div>
         <div class="price-when">charged only on YES</div>
         <ul class="price-features">
@@ -406,7 +410,7 @@
         </ul>
       </div>
       <div class="price-card">
-        <div class="price-role">target</div>
+        <div class="price-role"><span class="highlight-role">target</span></div>
         <div class="price-amount"><span class="price-currency">€</span>1.50</div>
         <div class="price-when">charged only on YES</div>
         <ul class="price-features">
@@ -422,8 +426,8 @@
 
     <div class="pricing-note">
       <strong>// why do both sides pay?</strong><br><br>
-      if only the seeker paid, a target could say YES to everyone without consequences.<br>
-      if only the target paid, seekers could spam for free.<br><br>
+      if only the <span class="highlight-role">seeker</span> paid, a <span class="highlight-role">target</span> could say YES to everyone without consequences.<br>
+      if only the <span class="highlight-role">target</span> paid, seekers could spam for free.<br><br>
       when <strong>both pay, both are serious.</strong> every YES means something real — on both sides. no exploitation possible. that's what makes nickradar genuinely fair.
     </div>
 
@@ -436,7 +440,7 @@
       </div>
       <div class="feature">
         <div class="feature-title">credit card via stripe</div>
-        <div class="feature-text">payment required when you send your first request (seeker) or say YES for the first time (target). secure, handled by Stripe.</div>
+        <div class="feature-text">payment required when you send your first request (<span class="highlight-role">seeker</span>) or say YES for the first time (<span class="highlight-role">target</span>). secure, handled by Stripe.</div>
         <div style="margin-top:16px;">
           <svg xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" aria-label="Stripe">
             <rect width="60" height="25" rx="4" fill="#635BFF"/>
@@ -492,7 +496,7 @@
       </div>
       <div class="value">
         <div class="value-title">equal rights</div>
-        <div class="value-text">seeker and target have equal power. no one can exploit the other.</div>
+        <div class="value-text"><span class="highlight-role">seeker</span> and <span class="highlight-role">target</span> have equal power. no one can exploit the other.</div>
       </div>
       <div class="value">
         <div class="value-title">privacy by design</div>
@@ -629,14 +633,14 @@
           <li>One account per person</li>
           <li>Nickname must be unique and non-offensive (max. 20 characters)</li>
           <li>A valid email address is required</li>
-          <li>Payment method is only required upon first contacting request (Seeker) or first YES (Target)</li>
+          <li>Payment method is only required upon first contacting request (<span class="highlight-role">Seeker</span>) or first YES (<span class="highlight-role">Target</span>)</li>
         </ul>
       </div>
       <div class="legal-section">
         <h3>§ 3 Pricing and Payment</h3>
         <ul>
-          <li>Seeker: EUR 3.00 per contacting request — charged only on mutual YES</li>
-          <li>Target: EUR 1.50 per acceptance (YES) — charged only on own YES</li>
+          <li><span class="highlight-role">Seeker</span>: EUR 3.00 per contacting request — charged only on mutual YES</li>
+          <li><span class="highlight-role">Target</span>: EUR 1.50 per acceptance (YES) — charged only on own YES</li>
           <li>No match — no cost for either party</li>
           <li>Automatic payment via Stripe upon mutual YES</li>
           <li>No refunds after a successful match and chat start</li>
