@@ -204,16 +204,12 @@
   <div class="hero">
     <div class="hero-grid"></div>
     <div class="hero-content">
-      <div class="hero-label">// real world. real people. real contact.</div>
       <img src="nr_logo_white.png" style="width:56px;height:56px;object-fit:contain;margin-bottom:16px;opacity:0.9;" />
       <div class="hero-logo">nickradar</div>
       <div class="hero-tagline">
         you see someone.<br>
         you see their nickname.<br>
         <em>you try. that's it.</em>
-      </div>
-      <div class="hero-price-hint">
-        <span>3.00 EUR</span> seeker &nbsp;·&nbsp; <span>1.50 EUR</span> target &nbsp;·&nbsp; <span>only on match</span>
       </div>
       <div class="hero-buttons">
         <button class="btn-primary" onclick="goToApp()">[ open app ]</button>
@@ -690,29 +686,7 @@
   </footer>
 </div>
 
-<script>
-  function goToApp() {
-    window.location.href = 'https://app.nickradar.com';
-  }
-  function toggleMenu() {
-    var menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('open');
-  }
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function goToApp() { window.location.href = "https://app.nickradar.com"; }
   function showPage(name) {
-    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-    var active = document.querySelector('.nav-link.active');
-    if (active) active.classList.remove('active');
-    document.getElementById('page-' + name).classList.add('active');
-    document.querySelectorAll('.nav-link').forEach(function(l) { if (l.textContent.trim() === name) l.classList.add('active'); });
-    window.scrollTo(0, 0);
-  }
-  function showLegal(tab, e) {
-    if (e) e.preventDefault();
-    document.querySelectorAll('.legal-content').forEach(function(c) { c.classList.remove('active'); });
-    document.querySelectorAll('.legal-tab').forEach(function(t) { t.classList.remove('active'); });
-    document.getElementById('legal-' + tab).classList.add('active');
-    if (e && e.target) e.target.classList.add('active');
-  }
-</script>
-</body>
-</html>
+    document.querySelectorAll('.pag
