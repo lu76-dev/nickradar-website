@@ -714,6 +714,9 @@
     document.getElementById('legal-' + tab).classList.add('active');
     if (e && e.target) e.target.classList.add('active');
   }
+  function goToApp() {
+    window.location.href = 'https://app.nickradar.com';
+  }
   function toggleMenu() {
     var menu = document.getElementById('mobile-menu');
     menu.classList.toggle('open');
