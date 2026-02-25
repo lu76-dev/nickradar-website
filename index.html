@@ -354,7 +354,7 @@
 <div class="page" id="page-clubs">
   <div class="section">
     <div style="position:relative;">
-      <div id="clubs-badge" style="position:absolute;top:0;right:0;width:90px;height:90px;border:1px solid #1a4d1a;overflow:hidden;font-family:monospace;">
+      <div id="clubs-badge" onclick="document.getElementById("locations-overlay").style.display="flex"" style="position:absolute;top:0;right:0;width:90px;height:90px;border:1px solid #1a4d1a;overflow:hidden;font-family:monospace;cursor:pointer;">
         <canvas id="clubs-rain" style="position:absolute;inset:0;z-index:1;"></canvas>
         <div style="position:absolute;width:6px;height:6px;border-top:1px solid #00ff41;border-left:1px solid #00ff41;top:4px;left:4px;z-index:5;"></div>
         <div style="position:absolute;width:6px;height:6px;border-top:1px solid #00ff41;border-right:1px solid #00ff41;top:4px;right:4px;z-index:5;"></div>
@@ -758,5 +758,29 @@
   }
 </script>
 <script defer src="https://analytics.nickradar.com/script.js" data-website-id="00d87254-9494-4939-a633-840abf0f574b"></script>
+
+<div id="locations-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;justify-content:center;align-items:center;" onclick="this.style.display='none'">
+  <div style="border:1px solid #00ff41;padding:40px 50px;max-width:420px;width:90%;text-align:center;position:relative;font-family:'Share Tech Mono',monospace;">
+    <div style="position:absolute;top:8px;left:8px;width:10px;height:10px;border-top:1px solid #00ff41;border-left:1px solid #00ff41;"></div>
+    <div style="position:absolute;top:8px;right:8px;width:10px;height:10px;border-top:1px solid #00ff41;border-right:1px solid #00ff41;"></div>
+    <div style="position:absolute;bottom:8px;left:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-left:1px solid #00ff41;"></div>
+    <div style="position:absolute;bottom:8px;right:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;"></div>
+    <div style="font-size:10px;letter-spacing:4px;color:#2a6a2a;margin-bottom:24px;">// OFFICIAL NICKRADAR LOCATIONS</div>
+    <div style="font-size:22px;letter-spacing:6px;color:#00ff41;font-weight:900;margin-bottom:8px;" id="curation-text">CURATION IN PROGRESS</div>
+    <div style="font-size:11px;letter-spacing:3px;color:#2a6a2a;margin-bottom:32px;" id="curation-blink">[ __ ]</div>
+    <div style="font-size:11px;color:#7abf7a;letter-spacing:2px;line-height:1.8;">selected venues only.<br>worldwide.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var frames = ['[ __ ]','[ ▮_ ]','[ ▮▮ ]','[ _▮ ]','[ __ ]'];
+  var i = 0;
+  setInterval(function(){
+    var el = document.getElementById('curation-blink');
+    if(el){ el.textContent = frames[i % frames.length]; i++; }
+  }, 400);
+})();
+</script>
 </body>
 </html>
