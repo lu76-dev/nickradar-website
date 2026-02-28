@@ -731,6 +731,7 @@
     setInterval(draw, 80);
   })();
   function goToApp() {
+    if (typeof umami !== 'undefined') umami.track('go_to_app');
     window.location.href = 'https://app.nickradar.com';
   }
   function toggleMenu() {
@@ -744,6 +745,7 @@
     document.getElementById('page-' + name).classList.add('active');
     document.querySelectorAll('.nav-link').forEach(function(l) { if (l.textContent.trim() === name) l.classList.add('active'); });
     window.scrollTo(0, 0);
+    if (typeof umami !== 'undefined') umami.track('page', { name: name });
   }
   function showLegal(tab, e) {
     if (e) e.preventDefault();
