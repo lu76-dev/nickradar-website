@@ -767,9 +767,20 @@
     <div style="position:absolute;bottom:8px;right:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;"></div>
     <div style="font-size:10px;letter-spacing:4px;color:#2a6a2a;margin-bottom:24px;">// OFFICIAL NICKRADAR LOCATIONS</div>
     <div style="font-size:22px;letter-spacing:6px;color:#00ff41;font-weight:900;margin-bottom:8px;" id="curation-text">CURATION IN PROGRESS</div>
-    <div style="font-size:11px;letter-spacing:3px;color:#2a6a2a;margin-top:4px;">...dots incoming</div>
+    <div style="font-size:11px;letter-spacing:3px;color:#2a6a2a;margin-bottom:32px;" id="curation-blink">[ __ ]</div>
+    <div style="font-size:11px;color:#7abf7a;letter-spacing:2px;line-height:1.8;">selected venues only.</div>
   </div>
 </div>
 
+<script>
+(function(){
+  var frames = ['[ __ ]','[ \u25ae_ ]','[ \u25ae\u25ae ]','[ _\u25ae ]','[ __ ]'];
+  var i = 0;
+  setInterval(function(){
+    var el = document.getElementById('curation-blink');
+    if(el){ el.textContent = frames[i % frames.length]; i++; }
+  }, 400);
+})();
+</script>
 </body>
 </html>
