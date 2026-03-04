@@ -907,7 +907,7 @@
 <script>
 (function(){
   var cur=1,timers=[],chatTick=null;
-  var DUR=[11000,7500,9500,9000,9000];
+  var DUR=[11000,10000,12000,9000,9000];
   function pad(n){return String(n).padStart(2,'0');}
   function kill(){timers.forEach(function(t){clearTimeout(t);clearInterval(t);});timers=[];if(chatTick){clearInterval(chatTick);chatTick=null;}}
   function after(ms,fn){var t=setTimeout(fn,ms);timers.push(t);}
