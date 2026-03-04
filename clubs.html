@@ -333,7 +333,9 @@
   }
 
   function buildPartiesTable(parties, isActive) {
-    var html = '<table><thead><tr><th>Name</th><th>Code</th><th>Aktivierungen</th><th>Auslastung</th><th>Ende</th>';
+    var html = '<table><thead><tr><th>Name</th><th>Code</th><th>Aktivierungen</th><th>Auslastung</th>';
+    if (!isActive) html += '<th>Beginn</th>';
+    html += '<th>Ende</th>';
     if (isActive) html += '<th></th>';
     html += '</tr></thead><tbody>';
     parties.forEach(function(p) {
@@ -357,6 +359,7 @@
         + '<td>' + codeHtml + '</td>'
         + '<td>' + p.used_count + ' / ' + p.limit_count + '</td>'
         + '<td><div class="progress-wrap"><div class="progress-fill ' + barClass + '" style="width:' + pct + '%"></div></div>' + pct + '%</td>'
+        + (!isActive ? '<td>' + new Date(p.created_at).toLocaleString('de-AT') + '</td>' : '')
         + '<td>' + (isActive ? '<span data-expires="' + p.expires_at + '">' + expires + '</span>' : expires) + '</td>'
         + (isActive ? upgradeHtml : '')
         + '</tr>';
