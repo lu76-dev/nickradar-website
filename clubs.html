@@ -307,7 +307,7 @@
     document.getElementById('parties-active').innerHTML = '<div class="loading">Lade...</div>';
     document.getElementById('parties-archive').innerHTML = '<div class="loading">Lade...</div>';
     try {
-      var r = await fetch(API + '/api/club/parties', { headers: { Authorization: 'Bearer ' + token } });
+      var r = await fetch(API + '/api/club/parties?t=' + Date.now(), { headers: { Authorization: 'Bearer ' + token } });
       var d = await r.json();
       if (!d.success) {
         document.getElementById('parties-active').innerHTML = '<div class="empty">Fehler beim Laden.</div>';
@@ -433,7 +433,7 @@
   async function loadClubData() {
     document.getElementById('clubdata-content').innerHTML = '<div class="loading">Lade...</div>';
     try {
-      var r = await fetch(API + '/api/club/me', { headers: { Authorization: 'Bearer ' + token } });
+      var r = await fetch(API + '/api/club/me?t=' + Date.now(), { headers: { Authorization: 'Bearer ' + token } });
       var d = await r.json();
       if (!d.success) { document.getElementById('clubdata-content').innerHTML = '<div class="empty">Fehler.</div>'; return; }
       var c = d.club;
