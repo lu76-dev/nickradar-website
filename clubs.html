@@ -321,6 +321,7 @@
       document.getElementById('parties-active').innerHTML = active.length === 0
         ? '<div class="empty">Keine aktiven Parties.</div>'
         : buildPartiesTable(active, true);
+      if (active.length > 0) setTimeout(startCountdowns, 100);
 
       document.getElementById('parties-archive').innerHTML = archive.length === 0
         ? '<div class="empty">Keine archivierten Parties.</div>'
@@ -344,14 +345,18 @@
         : '<code>' + p.code + '</code>';
       var upgradeHtml = '';
       if (isActive) {
-        upgradeHtml = '<td><div class="upgrade-row"><button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',100)">+100</button><button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',200)">+200</button><button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',500)">+500</button></div><div id="upg-' + p.id + '" style="font-size:11px;color:green;margin-top:4px;"></div></td>';
+        upgradeHtml = '<td><div class="upgrade-row">'
+          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',100)">+100 — €29</button>'
+          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',200)">+200 — €49</button>'
+          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',500)">+500 — €89</button>'
+          + '</div><div id="upg-' + p.id + '" style="font-size:11px;color:green;margin-top:4px;"></div></td>';
       }
       html += '<tr>'
         + '<td><strong>' + p.name + '</strong></td>'
         + '<td>' + codeHtml + '</td>'
         + '<td>' + p.used_count + ' / ' + p.limit_count + '</td>'
         + '<td><div class="progress-wrap"><div class="progress-fill ' + barClass + '" style="width:' + pct + '%"></div></div>' + pct + '%</td>'
-        + '<td>' + expires + '</td>'
+        + '<td>' + (isActive ? '<span data-expires="' + p.expires_at + '">' + expires + '</span>' : expires) + '</td>'
         + (isActive ? upgradeHtml : '')
         + '</tr>';
     });
@@ -450,6 +455,34 @@
       else if (rs.style.display !== 'none') doRegister();
     }
   });
+
+  function getCountdown(expiresAt) {
+    var diff = new Date(expiresAt) - new Date();
+    if (diff <= 0) return null;
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    var str = h + 'h ' + (m < 10 ? '0' : '') + m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+    var isRed = diff < 5 * 60 * 1000;
+    return { str: str, isRed: isRed };
+  }
+
+  function startCountdowns() {
+    clearInterval(window._countdownInterval);
+    window._countdownInterval = setInterval(function() {
+      document.querySelectorAll('[data-expires]').forEach(function(el) {
+        var result = getCountdown(el.getAttribute('data-expires'));
+        if (!result) {
+          el.textContent = 'Beendet';
+          el.style.color = '#999';
+        } else {
+          el.textContent = result.str;
+          el.style.color = result.isRed ? 'red' : '#000';
+          el.style.fontWeight = result.isRed ? 'bold' : 'normal';
+        }
+      });
+    }, 1000);
+  }
 </script>
 </body>
 </html>
