@@ -907,7 +907,7 @@
 <script>
 (function(){
   var cur=1,timers=[],chatTick=null;
-  var DUR=[11000,10000,17000,9000,9000];
+  var DUR=[11000,10000,13000,9000,9000];
   function pad(n){return String(n).padStart(2,'0');}
   function kill(){timers.forEach(function(t){clearTimeout(t);clearInterval(t);});timers=[];if(chatTick){clearInterval(chatTick);chatTick=null;}}
   function after(ms,fn){var t=setTimeout(fn,ms);timers.push(t);}
@@ -952,12 +952,12 @@
     after(400,function(){card.classList.add('show');});
     ashow('as3-txt',1200);
     after(3800,function(){yes.classList.add('lit');});
-    after(4500,function(){
+    after(9000,function(){
       match.classList.add('show');
       document.getElementById('as3-lbl').classList.remove('show');
       document.getElementById('as3-txt').classList.remove('show');
     });
-    after(6800,function(){goToA(4);});
+    after(13000,function(){goToA(4);});
   }
   function as4(){
     ['am1','am2','am3'].forEach(function(id){document.getElementById(id).classList.remove('show');});
