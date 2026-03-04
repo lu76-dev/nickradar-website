@@ -346,9 +346,10 @@
       var upgradeHtml = '';
       if (isActive) {
         upgradeHtml = '<td><div class="upgrade-row">'
-          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',100)">+100 — €29</button>'
-          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',200)">+200 — €49</button>'
-          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',500)">+500 — €89</button>'
+          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',100)">+100 &mdash; &euro;29</button>'
+          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',200)">+200 &mdash; &euro;49</button>'
+          + '<button class="upgrade-btn" onclick="doUpgrade(\'' + p.id + '\',500)">+500 &mdash; &euro;89</button>'
+          + '<button onclick="doStopParty(\'' + p.id + '\')" style="background:#dc3545;color:#fff;border:none;padding:4px 12px;font-size:11px;cursor:pointer;margin-left:12px;">Party stoppen</button>'
           + '</div><div id="upg-' + p.id + '" style="font-size:11px;color:green;margin-top:4px;"></div></td>';
       }
       html += '<tr>'
@@ -483,6 +484,19 @@
       });
     }, 1000);
   }
+
+  async function doStopParty(partyId) {
+    if (!confirm('Party sofort stoppen?\n\nNeue Code-Einloesungen werden blockiert.\nLaufende Chats bleiben aktiv (48h).')) return;
+    try {
+      var r = await fetch(API + '/api/club/party/' + partyId + '/stop', {
+        method: 'POST', headers: { Authorization: 'Bearer ' + token }
+      });
+      var d = await r.json();
+      if (d.success) loadParties();
+      else alert('Fehler: ' + d.error);
+    } catch(e) { alert('Verbindungsfehler.'); }
+  }
+
 </script>
 </body>
 </html>
