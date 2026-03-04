@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nickradar — Club Portal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 13px; }
+
+    /* ── SCREENS ── */
+    #screen-login, #screen-register { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 12px; }
+    #screen-portal { display: none; }
+
+    /* ── LOGIN / REGISTER ── */
+    .auth-box { width: 320px; display: flex; flex-direction: column; gap: 10px; }
+    .auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .auth-logo img { width: 32px; height: 32px; object-fit: contain; }
+    .auth-logo span { font-size: 18px; font-weight: bold; }
+    .auth-box h2 { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
+    .auth-box input { border: 1px solid #999; padding: 7px 10px; font-size: 13px; width: 100%; outline: none; }
+    .auth-box input:focus { border-color: #000; }
+    .auth-box button.btn-primary { background: #000; color: #fff; border: none; padding: 8px; font-size: 13px; cursor: pointer; width: 100%; }
+    .auth-box button.btn-primary:hover { background: #333; }
+    .auth-box .link { font-size: 12px; color: #666; text-align: center; cursor: pointer; }
+    .auth-box .link span { color: #000; text-decoration: underline; cursor: pointer; }
+    .auth-error { color: red; font-size: 12px; }
+    .auth-success { color: green; font-size: 12px; }
+    .auth-box label { font-size: 11px; color: #666; margin-bottom: -6px; }
+
+    /* ── TOP BAR ── */
+    .top-bar { background: #000; color: #fff; padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .top-bar-left { display: flex; align-items: center; gap: 12px; }
+    .top-bar-left img { width: 24px; height: 24px; object-fit: contain; }
+    .top-bar-left span { font-size: 14px; font-weight: bold; }
+    .top-bar-club { font-size: 12px; color: #aaa; }
+    .top-bar button { background: none; border: 1px solid #fff; color: #fff; padding: 4px 10px; font-size: 12px; cursor: pointer; }
+    .top-bar button:hover { background: #fff; color: #000; }
+
+    /* ── TABS ── */
+    .tabs { border-bottom: 2px solid #000; display: flex; }
+    .tab { padding: 8px 20px; cursor: pointer; font-size: 13px; border: none; background: none; border-right: 1px solid #ccc; }
+    .tab:hover { background: #eee; }
+    .tab.active { background: #000; color: #fff; font-weight: bold; }
+
+    /* ── CONTENT ── */
+    .content { padding: 16px; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+    .toolbar button { background: #fff; border: 1px solid #000; padding: 4px 12px; font-size: 12px; cursor: pointer; }
+    .toolbar button:hover { background: #000; color: #fff; }
+    .toolbar button.btn-black { background: #000; color: #fff; }
+    .toolbar button.btn-black:hover { background: #333; }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #000; color: #fff; padding: 7px 10px; text-align: left; font-size: 12px; white-space: nowrap; }
+    td { padding: 6px 10px; border-bottom: 1px solid #ddd; font-size: 12px; }
+    tr:hover td { background: #f5f5f5; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .loading { padding: 40px; text-align: center; color: #666; }
+    .empty { padding: 40px; text-align: center; color: #999; }
+
+    /* ── STATUS BADGES ── */
+    .badge-active { color: green; font-weight: bold; }
+    .badge-expired { color: #999; }
+    .badge-full { color: red; font-weight: bold; }
+
+    /* ── PARTY DETAIL ── */
+    #screen-party { display: none; }
+    .party-card { border: 1px solid #ddd; padding: 20px; max-width: 540px; margin-bottom: 20px; }
+    .party-card h3 { font-size: 15px; font-weight: bold; margin-bottom: 16px; }
+    .party-code-box { background: #f5f5f5; border: 1px solid #ccc; padding: 12px 20px; font-size: 24px; font-weight: bold; letter-spacing: 4px; text-align: center; margin-bottom: 16px; cursor: pointer; }
+    .party-code-hint { font-size: 11px; color: #999; text-align: center; margin-top: -12px; margin-bottom: 16px; }
+    .party-stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+    .party-stat:last-child { border-bottom: none; }
+    .party-stat-label { color: #666; }
+    .progress-bar-wrap { background: #eee; height: 8px; margin: 12px 0; }
+    .progress-bar-fill { background: #000; height: 8px; transition: width 0.3s; }
+    .progress-bar-fill.warn { background: orange; }
+    .progress-bar-fill.full { background: red; }
+    .upgrade-box { border: 1px solid #000; padding: 16px; margin-top: 16px; }
+    .upgrade-box h4 { font-size: 13px; font-weight: bold; margin-bottom: 12px; }
+    .upgrade-options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .upgrade-btn { border: 1px solid #000; background: #fff; padding: 8px 16px; font-size: 12px; cursor: pointer; }
+    .upgrade-btn:hover { background: #000; color: #fff; }
+
+    /* ── CREATE PARTY FORM ── */
+    .form-box { max-width: 420px; }
+    .form-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .form-row label { font-size: 11px; color: #666; }
+    .form-row input, .form-row select { border: 1px solid #999; padding: 7px 10px; font-size: 13px; outline: none; }
+    .form-row input:focus, .form-row select:focus { border-color: #000; }
+    .form-msg { font-size: 12px; margin-top: 8px; }
+
+    /* ── MISC ── */
+    .back-link { font-size: 12px; color: #000; cursor: pointer; margin-bottom: 16px; display: inline-block; }
+    .back-link:hover { text-decoration: underline; }
+    .section-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="screen-login" style="display:flex;">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <img src="https://nickradar.com/nr_logo_white.png" style="background:#000;padding:4px;border-radius:2px;" />
+      <span>nickradar — Club Portal</span>
+    </div>
+    <h2>Login</h2>
+    <label>Email</label>
+    <input type="email" id="login-email" placeholder="club@beispiel.at" />
+    <label>Passwort</label>
+    <input type="password" id="login-pw" placeholder="••••••••" />
+    <div class="auth-error" id="login-error"></div>
+    <button class="btn-primary" onclick="doLogin()">Einloggen</button>
+    <div class="link">Noch kein Account? <span onclick="showScreen('register')">Jetzt registrieren</span></div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="screen-register">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <img src="https://nickradar.com/nr_logo_white.png" style="background:#000;padding:4px;border-radius:2px;" />
+      <span>nickradar — Club Portal</span>
+    </div>
+    <h2>Club registrieren</h2>
+    <label>Firmenname *</label>
+    <input type="text" id="reg-name" placeholder="Club XY GmbH" />
+    <label>Adresse</label>
+    <input type="text" id="reg-address" placeholder="Musterstraße 1, 6020 Innsbruck" />
+    <label>UID Nummer</label>
+    <input type="text" id="reg-uid" placeholder="ATU12345678" />
+    <label>Ansprechpartner</label>
+    <input type="text" id="reg-contact" placeholder="Max Mustermann" />
+    <label>Email *</label>
+    <input type="email" id="reg-email" placeholder="club@beispiel.at" />
+    <label>Passwort *</label>
+    <input type="password" id="reg-pw" placeholder="min. 8 Zeichen" />
+    <div class="auth-error" id="reg-error"></div>
+    <div class="auth-success" id="reg-success"></div>
+    <button class="btn-primary" onclick="doRegister()">Registrierung absenden</button>
+    <div class="link">Bereits registriert? <span onclick="showScreen('login')">Einloggen</span></div>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div id="screen-portal">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <img src="https://nickradar.com/nr_logo_white.png" />
+      <span>nickradar — Club Portal</span>
+      <span class="top-bar-club" id="top-club-name"></span>
+    </div>
+    <button onclick="doLogout()">Logout</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('parties')">Meine Parties</button>
+    <button class="tab" onclick="showTab('create')">Neue Party</button>
+  </div>
+  <div class="content" id="tab-parties">
+    <div class="toolbar">
+      <div class="section-title">Parties</div>
+      <button onclick="loadParties()">↻ Aktualisieren</button>
+    </div>
+    <div id="parties-list"><div class="loading">Lade...</div></div>
+  </div>
+  <div class="content" id="tab-create" style="display:none;">
+    <div class="section-title">Neue Party erstellen</div>
+    <div class="form-box">
+      <div class="form-row">
+        <label>Party Name *</label>
+        <input type="text" id="new-name" placeholder="z.B. Friday Night Club XY" />
+      </div>
+      <div class="form-row">
+        <label>Party Ende (Datum + Uhrzeit) *</label>
+        <input type="datetime-local" id="new-expires" />
+      </div>
+      <div class="form-row">
+        <label>Anzahl Aktivierungen *</label>
+        <select id="new-limit">
+          <option value="100">100 Gäste</option>
+          <option value="200" selected>200 Gäste</option>
+          <option value="300">300 Gäste</option>
+          <option value="500">500 Gäste</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:9px;" onclick="doCreateParty()">Party erstellen</button>
+      <div class="form-msg" id="create-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PARTY DETAIL (overlay) -->
+<div id="screen-party">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <img src="https://nickradar.com/nr_logo_white.png" />
+      <span>nickradar — Club Portal</span>
+    </div>
+    <button onclick="backToPortal()">← Zurück</button>
+  </div>
+  <div class="content">
+    <div id="party-detail-content"><div class="loading">Lade...</div></div>
+  </div>
+</div>
+
+<script>
+  const API = 'https://api.nickradar.com';
+  let token = localStorage.getItem('club_token');
+  let clubName = localStorage.getItem('club_name');
+  let currentPartyId = null;
+
+  // ── INIT ──
+  if (token) {
+    showScreen('portal');
+    document.getElementById('top-club-name').textContent = clubName || '';
+    loadParties();
+  } else {
+    showScreen('login');
+  }
+
+  function showScreen(name) {
+    ['login','register','portal','party'].forEach(s => {
+      const el = document.getElementById('screen-' + s);
+      el.style.display = 'none';
+    });
+    const target = document.getElementById('screen-' + name);
+    target.style.display = (name === 'login' || name === 'register') ? 'flex' : 'block';
+  }
+
+  function showTab(name) {
+    document.getElementById('tab-parties').style.display = name === 'parties' ? 'block' : 'none';
+    document.getElementById('tab-create').style.display = name === 'create' ? 'block' : 'none';
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && name === 'parties') || (i === 1 && name === 'create'));
+    });
+  }
+
+  // ── AUTH ──
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pw = document.getElementById('login-pw').value;
+    document.getElementById('login-error').textContent = '';
+    try {
+      const r = await fetch(API + '/api/club/login', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ email, password: pw })
+      });
+      const d = await r.json();
+      if (!d.success) {
+        document.getElementById('login-error').textContent = d.error === 'account pending approval'
+          ? 'Dein Account wird noch geprüft. Du bekommst eine Email wenn er freigeschaltet ist.'
+          : 'Email oder Passwort falsch.';
+        return;
+      }
+      localStorage.setItem('club_token', d.token);
+      localStorage.setItem('club_name', d.club.name);
+      token = d.token;
+      clubName = d.club.name;
+      document.getElementById('top-club-name').textContent = clubName;
+      showScreen('portal');
+      loadParties();
+    } catch(e) {
+      document.getElementById('login-error').textContent = 'Verbindungsfehler.';
+    }
+  }
+
+  async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pw = document.getElementById('reg-pw').value;
+    document.getElementById('reg-error').textContent = '';
+    document.getElementById('reg-success').textContent = '';
+    if (!name || !email || !pw) {
+      document.getElementById('reg-error').textContent = 'Bitte alle Pflichtfelder ausfüllen.';
+      return;
+    }
+    try {
+      const r = await fetch(API + '/api/club/register', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          name,
+          address: document.getElementById('reg-address').value.trim(),
+          uid: document.getElementById('reg-uid').value.trim(),
+          contact_name: document.getElementById('reg-contact').value.trim(),
+          email, password: pw
+        })
+      });
+      const d = await r.json();
+      if (!d.success) {
+        document.getElementById('reg-error').textContent = d.error === 'email already registered'
+          ? 'Diese Email ist bereits registriert.' : d.error;
+        return;
+      }
+      document.getElementById('reg-success').textContent = 'Registrierung gesendet — du bekommst eine Email sobald dein Account freigeschaltet ist.';
+    } catch(e) {
+      document.getElementById('reg-error').textContent = 'Verbindungsfehler.';
+    }
+  }
+
+  function doLogout() {
+    localStorage.removeItem('club_token');
+    localStorage.removeItem('club_name');
+    token = null;
+    showScreen('login');
+  }
+
+  // ── PARTIES ──
+  async function loadParties() {
+    document.getElementById('parties-list').innerHTML = '<div class="loading">Lade...</div>';
+    try {
+      const r = await fetch(API + '/api/club/parties', { headers: { Authorization: 'Bearer ' + token } });
+      const d = await r.json();
+      if (!d.success) { document.getElementById('parties-list').innerHTML = '<div class="empty">Fehler beim Laden.</div>'; return; }
+      if (d.parties.length === 0) {
+        document.getElementById('parties-list').innerHTML = '<div class="empty">Noch keine Parties. Erstelle deine erste Party!</div>';
+        return;
+      }
+      let html = '<table><thead><tr><th>Name</th><th>Code</th><th>Aktivierungen</th><th>Ende</th><th>Status</th><th></th></tr></thead><tbody>';
+      d.parties.forEach(p => {
+        const now = new Date();
+        const expires = new Date(p.expires_at);
+        const isExpired = expires < now;
+        const isFull = p.used_count >= p.limit_count;
+        const pct = Math.round(p.used_count / p.limit_count * 100);
+        let statusClass = 'badge-active', statusText = 'Aktiv';
+        if (isExpired) { statusClass = 'badge-expired'; statusText = 'Beendet'; }
+        else if (isFull) { statusClass = 'badge-full'; statusText = 'VOLL'; }
+        html += `<tr>
+          <td><strong>${p.name}</strong></td>
+          <td><code>${p.code}</code></td>
+          <td>${p.used_count} / ${p.limit_count} (${pct}%)</td>
+          <td>${expires.toLocaleString('de-AT')}</td>
+          <td class="${statusClass}">${statusText}</td>
+          <td><button onclick="showParty('${p.id}')">Detail →</button></td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('parties-list').innerHTML = html;
+    } catch(e) {
+      document.getElementById('parties-list').innerHTML = '<div class="empty">Verbindungsfehler.</div>';
+    }
+  }
+
+  async function showParty(id) {
+    currentPartyId = id;
+    showScreen('party');
+    document.getElementById('party-detail-content').innerHTML = '<div class="loading">Lade...</div>';
+    await refreshPartyDetail();
+  }
+
+  async function refreshPartyDetail() {
+    try {
+      const r = await fetch(API + '/api/club/party/' + currentPartyId, { headers: { Authorization: 'Bearer ' + token } });
+      const d = await r.json();
+      if (!d.success) { document.getElementById('party-detail-content').innerHTML = '<div class="empty">Fehler.</div>'; return; }
+      const p = d.party;
+      const now = new Date();
+      const expires = new Date(p.expires_at);
+      const isExpired = expires < now;
+      const isFull = p.used_count >= p.limit_count;
+      const pct = p.limit_count > 0 ? Math.round(p.used_count / p.limit_count * 100) : 0;
+      const barClass = isFull ? 'full' : (pct >= 80 ? 'warn' : '');
+
+      let upgradeHtml = '';
+      if (!isExpired) {
+        upgradeHtml = `
+        <div class="upgrade-box">
+          <h4>Limit erhöhen</h4>
+          <div class="upgrade-options">
+            <button class="upgrade-btn" onclick="doUpgrade(100)">+ 100 Gäste</button>
+            <button class="upgrade-btn" onclick="doUpgrade(200)">+ 200 Gäste</button>
+            <button class="upgrade-btn" onclick="doUpgrade(500)">+ 500 Gäste</button>
+          </div>
+          <div class="form-msg" id="upgrade-msg"></div>
+        </div>`;
+      }
+
+      document.getElementById('party-detail-content').innerHTML = `
+        <div class="party-card">
+          <h3>${p.name}</h3>
+          <div class="party-code-box" onclick="copyCode('${p.code}')" title="Klicken zum Kopieren">${p.code}</div>
+          <div class="party-code-hint">↑ Klicken zum Kopieren</div>
+          <div class="party-stat"><span class="party-stat-label">Aktivierungen</span><strong>${p.used_count} / ${p.limit_count}</strong></div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill ${barClass}" style="width:${pct}%"></div></div>
+          <div class="party-stat"><span class="party-stat-label">Auslastung</span><span>${pct}%</span></div>
+          <div class="party-stat"><span class="party-stat-label">Party Ende</span><span>${expires.toLocaleString('de-AT')}</span></div>
+          <div class="party-stat"><span class="party-stat-label">Status</span><span class="${isFull ? 'badge-full' : isExpired ? 'badge-expired' : 'badge-active'}">${isFull ? 'VOLL' : isExpired ? 'Beendet' : 'Aktiv'}</span></div>
+        </div>
+        ${upgradeHtml}
+      `;
+    } catch(e) {
+      document.getElementById('party-detail-content').innerHTML = '<div class="empty">Verbindungsfehler.</div>';
+    }
+  }
+
+  async function doUpgrade(amount) {
+    document.getElementById('upgrade-msg').textContent = 'Wird verarbeitet...';
+    try {
+      const r = await fetch(API + '/api/club/party/' + currentPartyId + '/upgrade', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ added_limit: amount })
+      });
+      const d = await r.json();
+      if (!d.success) { document.getElementById('upgrade-msg').textContent = 'Fehler: ' + d.error; return; }
+      document.getElementById('upgrade-msg').textContent = '✓ Limit erhöht auf ' + d.party.limit_count;
+      await refreshPartyDetail();
+    } catch(e) {
+      document.getElementById('upgrade-msg').textContent = 'Verbindungsfehler.';
+    }
+  }
+
+  function copyCode(code) {
+    navigator.clipboard.writeText(code).then(() => {
+      alert('Code kopiert: ' + code);
+    });
+  }
+
+  function backToPortal() {
+    showScreen('portal');
+    loadParties();
+  }
+
+  // ── CREATE PARTY ──
+  async function doCreateParty() {
+    const name = document.getElementById('new-name').value.trim();
+    const expires = document.getElementById('new-expires').value;
+    const limit = document.getElementById('new-limit').value;
+    const msg = document.getElementById('create-msg');
+    msg.textContent = '';
+    msg.style.color = 'red';
+    if (!name || !expires) { msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
+    try {
+      const r = await fetch(API + '/api/club/party/create', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ name, expires_at: new Date(expires).toISOString(), limit_count: parseInt(limit) })
+      });
+      const d = await r.json();
+      if (!d.success) { msg.textContent = 'Fehler: ' + d.error; return; }
+      msg.style.color = 'green';
+      msg.textContent = '✓ Party erstellt! Code: ' + d.party.code;
+      document.getElementById('new-name').value = '';
+      document.getElementById('new-expires').value = '';
+      setTimeout(() => { showTab('parties'); loadParties(); }, 1500);
+    } catch(e) {
+      msg.textContent = 'Verbindungsfehler.';
+    }
+  }
+
+  // ── KEYBOARD ──
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const ls = document.getElementById('screen-login');
+      const rs = document.getElementById('screen-register');
+      if (ls.style.display !== 'none') doLogin();
+      else if (rs.style.display !== 'none') doRegister();
+    }
+  });
+</script>
+</body>
+</html>
