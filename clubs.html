@@ -174,8 +174,7 @@
         <input type="text" id="new-name" placeholder="z.B. Friday Night Club XY" />
       </div>
       <div class="form-row">
-        <label>Party Ende (Datum + Uhrzeit) *</label>
-        <input type="datetime-local" id="new-expires" />
+        <label style="color:#000;font-size:12px;">⏱ Party startet sofort nach dem Erstellen und dauert 12 Stunden.</label>
       </div>
       <div class="form-row">
         <label>Anzahl Aktivierungen *</label>
@@ -207,7 +206,7 @@
 </div>
 
 <script>
-  const API = 'https://api.nickradar.com';
+  const API = 'https://nickradar.com';
   let token = localStorage.getItem('club_token');
   let clubName = localStorage.getItem('club_name');
   let currentPartyId = null;
@@ -431,11 +430,12 @@
     const msg = document.getElementById('create-msg');
     msg.textContent = '';
     msg.style.color = 'red';
-    if (!name || !expires) { msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
+    if (!name) { msg.textContent = 'Bitte alle Felder ausfüllen.'; return; }
     try {
+      const expires = new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString();
       const r = await fetch(API + '/api/club/party/create', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify({ name, expires_at: new Date(expires).toISOString(), limit_count: parseInt(limit) })
+        body: JSON.stringify({ name, expires_at: expires, limit_count: parseInt(limit) })
       });
       const d = await r.json();
       if (!d.success) { msg.textContent = 'Fehler: ' + d.error; return; }
