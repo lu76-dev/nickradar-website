@@ -343,6 +343,10 @@
       var pct = p.limit_count > 0 ? Math.round(p.used_count / p.limit_count * 100) : 0;
       var barClass = pct >= 100 ? 'full' : (pct >= 80 ? 'warn' : '');
       var expires = new Date(p.expires_at).toLocaleString('de-AT');
+      var endStatus = isActive ? ''
+        : p.stopped_by === 'admin' ? '<span style="color:#dc3545;font-weight:bold;">Beendet</span>'
+        : p.stopped_by === 'club' ? '<span style="color:orange;font-weight:bold;">Gestoppt</span>'
+        : '<span style="color:#999;">Abgelaufen</span>';
       var codeHtml = isActive
         ? '<span class="party-code-box" onclick="copyCode(\'' + p.code + '\')" title="Klicken zum Kopieren">' + p.code + '</span>'
         : '<code>' + p.code + '</code>';
