@@ -249,7 +249,7 @@
     <button class="nav-link" onclick="showPage('how')">how it works</button>
     <button class="nav-link" onclick="showPage('pricing')">pricing</button>
     <button class="nav-link" onclick="showPage('about')">about</button>
-    <button class="nav-link" onclick="showPage('clubs')">clubs</button>
+    <button class="nav-link" onclick="showPage('clubs')">events</button>
     <button class="nav-cta" onclick="goToApp()">[ open app ]</button>
   </div>
   <div class="hamburger" onclick="toggleMenu()" id="hamburger">
@@ -262,7 +262,7 @@
   <button class="nav-link" onclick="showPage('how'); toggleMenu()">how it works</button>
   <button class="nav-link" onclick="showPage('pricing'); toggleMenu()">pricing</button>
   <button class="nav-link" onclick="showPage('about'); toggleMenu()">about</button>
-  <button class="nav-link" onclick="showPage('clubs'); toggleMenu()">clubs</button>
+  <button class="nav-link" onclick="showPage('clubs'); toggleMenu()">events</button>
   <button class="nav-cta" style="margin-top:8px" onclick="goToApp()">[ open app ]</button>
 </div>
 
@@ -372,8 +372,8 @@
     <div class="stat"><span class="stat-value">48h</span><span class="stat-label">chat time</span></div>
     <div class="stat"><span class="stat-value">0</span><span class="stat-label">algorithms</span></div>
     <div class="stat"><span class="stat-value">0</span><span class="stat-label">subscriptions</span></div>
-    <div class="stat"><span class="stat-value">€3.00</span><span class="stat-label">⚡ <span class="nr-role">seeker</span> / match</span></div>
-    <div class="stat"><span class="stat-value">€1.50</span><span class="stat-label">🎯 <span class="nr-role">target</span> / match</span></div>
+    <div class="stat"><span class="stat-value">€3.00</span><span class="stat-label"><span class="nr-role">seeker</span> / match</span></div>
+    <div class="stat"><span class="stat-value">€1.50</span><span class="stat-label"><span class="nr-role">target</span> / match</span></div>
     <div class="stats-note">no match — <em>no charge.</em> you only pay when both say <span class="nr-yes">YES</span>.</div>
     <div class="stats-note" style="border-top:1px solid var(--green-dim);">payments 100% secure &amp; handled by  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 60 25" aria-label="Stripe" style="vertical-align:middle;"><rect width="60" height="25" rx="4" fill="#635BFF"/><text x="30" y="17" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">stripe</text></svg></div>
   </div>
@@ -416,7 +416,7 @@
 <!-- HOW IT WORKS -->
 <div class="page" id="page-how">
   <div class="section">
-    <div style="font-size:16px;font-weight:700;letter-spacing:3px;color:#ffffff;margin-bottom:16px;">⚡ seeker meets target 🎯</div>
+    <div class="section-label">// the process</div>
     <div class="section-title">one moment.<br>one shot.<br>real.</div>
 
     <div class="steps">
@@ -503,7 +503,20 @@
         <div style="position:absolute;width:6px;height:6px;border-top:1px solid #00ff41;border-right:1px solid #00ff41;top:4px;right:4px;z-index:5;"></div>
         <div style="position:absolute;width:6px;height:6px;border-bottom:1px solid #00ff41;border-left:1px solid #00ff41;bottom:26px;left:4px;z-index:5;"></div>
         <div style="position:absolute;width:6px;height:6px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;bottom:26px;right:4px;z-index:5;"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:13px;letter-spacing:4px;color:#000;font-weight:900;z-index:4;background:#00ff41;padding:5px 0;animation:flicker 3s infinite;">CLUBS</div>
+        <div id="clubs-rotate-label" style="position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:11px;letter-spacing:3px;color:#000;font-weight:900;z-index:4;background:#00ff41;padding:5px 0;">EVENTS</div>
+<script>
+(function(){
+  var words=["EVENTS","FESTIVALS","CLUBS","UNI PARTIES"];
+  var i=0;
+  setInterval(function(){
+    i=(i+1)%words.length;
+    var el=document.getElementById("clubs-rotate-label");
+    if(el){el.style.opacity="0";setTimeout(function(){el.textContent=words[i];el.style.opacity="1";},300);}
+  },2000);
+  var el=document.getElementById("clubs-rotate-label");
+  if(el){el.style.transition="opacity 0.3s";}
+})();
+</script>
       </div>
     </div>
     <div class="section-label">// nickradar parties</div>
@@ -521,9 +534,9 @@
     </div>
 
     <div style="border:1px solid #00ff41;padding:28px 36px;max-width:600px;margin:32px auto 0;text-align:center;">
-      <div style="font-size:16px;font-weight:700;letter-spacing:3px;color:#ffffff;margin-bottom:14px;">🎉 party mode</div>
+      <div style="font-size:11px;letter-spacing:4px;color:#7abf7a;margin-bottom:14px;">// party mode</div>
       <div style="font-size:17px;font-weight:700;color:#00ff41;letter-spacing:2px;margin-bottom:14px;">at club events — it's free.</div>
-      <div style="font-size:13px;color:#7abf7a;line-height:1.9;">clubs gives you as a guest a <span style="color:#ffffff;font-weight:700;">PARTY CODE.</span> you enter it in the app — and for the entire event, all requests are free.</div>
+      <div style="font-size:13px;color:#7abf7a;line-height:1.9;">clubs give their guests a <span style="color:#00ff41;font-weight:700;">party code</span> at the door. enter the code in the app — and for the entire event, <span style="color:#00ff41;font-weight:700;">seeker and target both pay nothing.</span> every match is free. same rules, same experience — just without any cost.<br><br>the code is only valid during the event. after the party, regular pricing applies.</div>
     </div>
 
     <hr class="divider-line">
@@ -532,7 +545,7 @@
       <div style="font-size:11px;letter-spacing:4px;color:#7abf7a;margin-bottom:16px;">// for clubs &amp; venues</div>
       <div style="font-size:20px;font-weight:700;color:var(--green);letter-spacing:2px;margin-bottom:16px;">interested in a cooperation?</div>
       <div style="font-size:13px;color:#7abf7a;line-height:1.8;margin-bottom:24px;">bring nickradar to your venue. run nickradar parties. give your guests a new way to connect — live, in the moment.</div>
-      <a href="https://clubs.nickradar.com/" target="_blank" style="display:inline-block;background:var(--green);color:#000;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:2px;padding:14px 32px;text-decoration:none;">CLUBS LOGIN</a>
+      <a href="#" onclick="window.location.href='mai'+'lto:info@nickradar.com';return false;" style="display:inline-block;background:var(--green);color:#000;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:2px;padding:14px 32px;text-decoration:none;"><span class="__cf_email__" data-cfemail="9dfef1e8ffeeddf3f4fef6effcf9fcefb3fef2f0">[email&#160;protected]</span></a>
     </div>
 
   </div>
@@ -907,7 +920,7 @@
 <script>
 (function(){
   var cur=1,timers=[],chatTick=null;
-  var DUR=[11000,10000,13000,9000,9000];
+  var DUR=[7000,7500,9500,9000,12000];
   function pad(n){return String(n).padStart(2,'0');}
   function kill(){timers.forEach(function(t){clearTimeout(t);clearInterval(t);});timers=[];if(chatTick){clearInterval(chatTick);chatTick=null;}}
   function after(ms,fn){var t=setTimeout(fn,ms);timers.push(t);}
@@ -952,12 +965,12 @@
     after(400,function(){card.classList.add('show');});
     ashow('as3-txt',1200);
     after(3800,function(){yes.classList.add('lit');});
-    after(7000,function(){
+    after(4500,function(){
       match.classList.add('show');
       document.getElementById('as3-lbl').classList.remove('show');
       document.getElementById('as3-txt').classList.remove('show');
     });
-    after(13000,function(){goToA(4);});
+    after(6800,function(){goToA(4);});
   }
   function as4(){
     ['am1','am2','am3'].forEach(function(id){document.getElementById(id).classList.remove('show');});
@@ -985,5 +998,5 @@
     <div style="position:absolute;bottom:8px;left:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-left:1px solid #00ff41;"></div>
     <div style="position:absolute;bottom:8px;right:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;"></div>
     <div style="font-size:10px;letter-spacing:4px;color:#2a6a2a;margin-bottom:24px;">// OFFICIAL NICKRADAR LOCATIONS</div>
-    <div style="font-size:22px;letter-spacing:6px;color:#00ff41;font-weight:900;margin-bottom:8px;" id="curation-text">WORK IN PROGRESS</div>
+    <div style="font-size:22px;letter-spacing:6px;color:#00ff41;font-weight:900;margin-bottom:8px;" id="curation-text">CURATION IN PROGRESS</div>
     <div style="font-size:11px;letter-spacing:3px;color:#2a6a2a;margin-bot
