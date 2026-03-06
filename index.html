@@ -249,7 +249,7 @@
     <button class="nav-link" onclick="showPage('how')">how it works</button>
     <button class="nav-link" onclick="showPage('pricing')">pricing</button>
     <button class="nav-link" onclick="showPage('about')">about</button>
-    <button class="nav-link" onclick="showPage('clubs')">clubs</button>
+    <button class="nav-link" onclick="showPage('clubs')">events</button>
     <button class="nav-cta" onclick="goToApp()">[ open app ]</button>
   </div>
   <div class="hamburger" onclick="toggleMenu()" id="hamburger">
@@ -262,7 +262,7 @@
   <button class="nav-link" onclick="showPage('how'); toggleMenu()">how it works</button>
   <button class="nav-link" onclick="showPage('pricing'); toggleMenu()">pricing</button>
   <button class="nav-link" onclick="showPage('about'); toggleMenu()">about</button>
-  <button class="nav-link" onclick="showPage('clubs'); toggleMenu()">clubs</button>
+  <button class="nav-link" onclick="showPage('clubs'); toggleMenu()">events</button>
   <button class="nav-cta" style="margin-top:8px" onclick="goToApp()">[ open app ]</button>
 </div>
 
@@ -503,7 +503,8 @@
         <div style="position:absolute;width:6px;height:6px;border-top:1px solid #00ff41;border-right:1px solid #00ff41;top:4px;right:4px;z-index:5;"></div>
         <div style="position:absolute;width:6px;height:6px;border-bottom:1px solid #00ff41;border-left:1px solid #00ff41;bottom:26px;left:4px;z-index:5;"></div>
         <div style="position:absolute;width:6px;height:6px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;bottom:26px;right:4px;z-index:5;"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:13px;letter-spacing:4px;color:#000;font-weight:900;z-index:4;background:#00ff41;padding:5px 0;animation:flicker 3s infinite;">CLUBS</div>
+        <div id="events-rotate-label" style="position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:10px;letter-spacing:2px;color:#000;font-weight:900;z-index:4;background:#00ff41;padding:5px 0;transition:opacity 0.3s;">EVENTS</div>
+<script>(function(){var w=["EVENTS","FESTIVALS","CLUBS","UNI PARTIES"],i=0;var el=document.getElementById("events-rotate-label");setInterval(function(){i=(i+1)%w.length;el.style.opacity="0";setTimeout(function(){el.textContent=w[i];el.style.opacity="1";},300);},2000);})();</script>
       </div>
     </div>
     <div class="section-label">// nickradar parties</div>
