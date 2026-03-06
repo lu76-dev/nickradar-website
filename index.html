@@ -346,15 +346,7 @@
               </div>
               <div class="anim-txt" id="as4-txt">talk. meet. <em>48 hours time.</em></div>
             </div>
-            <div class="anim-scene" id="as5">
-              <div class="anim-fin-logo" id="af-logo">pricing</div>
-              <div class="anim-fin-stats" id="af-stats">
-                <div class="anim-fs"><span class="anim-fsv">⚡ €3.00</span><span class="anim-fsl">seeker</span></div>
-                <div class="anim-fs"><span class="anim-fsv">🎯 €1.50</span><span class="anim-fsl">target</span></div>
-                <div class="anim-fs"><span class="anim-fsv">€0.00</span><span class="anim-fsl">subscriptions</span></div>
-              </div>
-              <div class="anim-txt show" id="af-note" style="margin-top:16px;">no match — no charge. you only pay when both say <strong style="color:#fff;font-weight:900;">YES</strong>.</div>
-            </div>
+
           </div>
           <div class="anim-pbar" id="apbar"></div>
         </div>
@@ -905,8 +897,8 @@
     var bar=document.getElementById('apbar');
     bar.style.transition='none';bar.style.width='0%';
     setTimeout(function(){bar.style.transition='width '+DUR[n-1]+'ms linear';bar.style.width='100%';},40);
-    [null,as1,as2,as3,as4,as5][n]();
-    after(DUR[n-1],function(){goToA(n<5?n+1:1);});
+    [null,as1,as2,as3,as4][n]();
+    after(DUR[n-1],function(){goToA(n<4?n+1:1);});
   }
   function as1(){
     var el=document.getElementById('as1-sticker');el.classList.remove('show');
@@ -952,11 +944,7 @@
     var el=document.getElementById('as4-timer');
     chatTick=setInterval(function(){secs--;el.textContent=pad(Math.floor(secs/3600))+':'+pad(Math.floor((secs%3600)/60))+':'+pad(secs%60);},1000);
   }
-  function as5(){
-    document.getElementById('af-logo').classList.remove('show');
-    document.getElementById('af-stats').classList.remove('show');
-    ashow('af-logo',300);ashow('af-stats',800);
-  }
+
   goToA(1);
 })();
 </script>
