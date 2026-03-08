@@ -688,7 +688,7 @@ function showLegal(id, e) {
     var next=document.getElementById('as'+n);if(next)next.classList.add('active');
     document.querySelectorAll('.anim-dot').forEach(function(d,i){d.classList.remove('active','done');if(i+1===n)d.classList.add('active');else if(i+1<n)d.classList.add('done');});
     var bar=document.getElementById('apbar');
-    if(bar){bar.style.transition='none';bar.style.width='0%';setTimeout(function(){bar.style.transition='width '+DUR[n-1]+'ms linear';bar.style.width='100%';},40);}
+    if(bar){bar.style.transition='none';bar.style.width='0%';bar.getBoundingClientRect();bar.style.transition='width '+DUR[n-1]+'ms linear';bar.style.width='100%';}
     [null,as1,as2,as3,as4][n]();
     after(DUR[n-1],function(){goToA(n<4?n+1:1);});
   }
