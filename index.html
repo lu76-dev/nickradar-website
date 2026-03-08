@@ -665,6 +665,7 @@ function showPage(id, tab) {
   document.getElementById('page-' + id).classList.add('active');
   if (tab) tab.classList.add('active');
   window.scrollTo(0, 0);
+  if (id === 'life' && typeof lifeAnimStart === 'function') lifeAnimStart();
 }
 function showLegal(id, e) {
   document.querySelectorAll('.legal-content').forEach(p => p.classList.remove('active'));
@@ -739,7 +740,7 @@ function showLegal(id, e) {
     var el=document.getElementById('as4-timer');
     chatTick=setInterval(function(){secs--;if(el)el.textContent=pad(Math.floor(secs/3600))+':'+pad(Math.floor((secs%3600)/60))+':'+pad(secs%60);},1000);
   }
-  if(document.getElementById('as1')) goToA(1);
+  lifeAnimStart = function(){ goToA(1); };
 })();
 </script>
 </body>
