@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="nickradar — contact people you see in real life. no swiping, no algorithm. you see a nickname, you type it, you try. real world first.">
+  <meta name="keywords" content="nickradar, contacting, real life, nickname, connect, austria, no swiping">
+  <meta name="author" content="nickradar">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="nickradar — real world contacting">
+  <meta property="og:description" content="you see someone. you see their nickname. you try. no algorithm. no swiping. just real life.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nickradar.com">
+  <meta property="og:site_name" content="nickradar">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="nickradar — real world contacting">
+  <meta name="twitter:description" content="you see someone. you see their nickname. you try. real life first, digital second.">
+  <title>nickradar — real world contacting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Share+Tech&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Share Tech Mono';
+      src: url('/ShareTechMono.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      --black: #000000;
+      --green: #00ff41;
+      --green-dim: #1a4d1a;
+      --green-mid: #2a6a2a;
+      --mono: 'Share Tech Mono', 'Courier New', monospace;
+      --sans: 'Share Tech', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--green); font-family: var(--mono); overflow-x: hidden; cursor: default; }
+    body::after {
+      content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(0,0,0,0.95); border-bottom: 1px solid var(--green-mid); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; backdrop-filter: blur(8px); }
+    .nav-logo { font-size: 18px; font-weight: 700; letter-spacing: 4px; color: var(--green); cursor: pointer; }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-link { background: none; border: none; color: #7abf7a; font-family: var(--mono); font-size: 13px; letter-spacing: 2px; padding: 6px 14px; cursor: pointer; transition: color 0.2s; }
+    .nav-link:hover, .nav-link.active { color: var(--green); }
+    .nav-cta { background: var(--green); color: var(--black); border: none; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 7px 16px; cursor: pointer; transition: background 0.2s; }
+    .nav-cta:hover { background: #fff; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--green); }
+    .mobile-menu { display: none; position: fixed; top: 56px; left: 0; right: 0; background: #000; border-bottom: 1px solid var(--green-dim); padding: 16px 24px; flex-direction: column; gap: 4px; z-index: 999; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu .nav-link { font-size: 13px; padding: 10px 0; border-bottom: 1px solid var(--green-dim); }
+    .mobile-menu .nav-link:last-child { border-bottom: none; }
+
+    /* PAGES */
+    .page { display: none; min-height: 100vh; padding-top: 56px; }
+    .page.active { display: block; }
+
+    /* HERO */
+    .hero { min-height: calc(100vh - 56px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px 60px; position: relative; overflow: visible; }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px); background-size: 40px 40px; }
+    .hero-content { position: relative; z-index: 1; text-align: center; max-width: 680px; }
+    .hero-label { font-size: 10px; letter-spacing: 4px; color: var(--green-mid); margin-bottom: 24px; }
+    .hero-logo { font-size: clamp(48px, 12vw, 96px); font-weight: 700; letter-spacing: 8px; color: var(--green); line-height: 1; margin-bottom: 8px; animation: flicker 4s infinite; }
+    @keyframes flicker { 0%, 95%, 100% { opacity: 1; } 96% { opacity: 0.8; } 97% { opacity: 1; } 98% { opacity: 0.6; } 99% { opacity: 1; } }
+    .hero-tagline { font-size: clamp(13px, 3vw, 16px); color: var(--green-mid); letter-spacing: 2px; margin-bottom: 16px; line-height: 1.8; }
+    .hero-tagline em { color: var(--green); font-style: normal; }
+    .hero-price-hint { font-size: 11px; letter-spacing: 2px; color: #7abf7a; margin-bottom: 40px; }
+    .hero-price-hint span { color: var(--green); }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--green); color: var(--black); border: none; font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 3px; padding: 14px 32px; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    .btn-secondary { background: none; color: var(--green); border: 1px solid var(--green-mid); font-family: var(--mono); font-size: 13px; letter-spacing: 2px; padding: 14px 32px; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--green); transform: translateY(-2px); }
+    .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 3px; color: var(--green-mid); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+    /* STATS BAR */
+    .stats-bar { border-top: 1px solid var(--green-dim); border-bottom: 1px solid var(--green-dim); display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--green-dim); }
+    .stat { background: var(--black); padding: 20px; text-align: center; }
+    .stat-value { font-size: clamp(20px, 4vw, 32px); font-weight: 700; color: var(--green); display: block; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; letter-spacing: 2px; color: #7abf7a; }
+    .stats-note { background: var(--black); padding: 16px 28px; text-align: center; font-size: 13px; color: #7abf7a; letter-spacing: 1px; grid-column: 1 / -1; border-top: 1px solid var(--green-dim); }
+    .stats-note em { color: var(--green); font-style: normal; }
+    .nr-yes { color: #ffffff !important; font-weight: 900; font-size: 1.1em; display: inline-block; }
+    .nr-cr { font-weight: 900; font-size: 1.1em; }
+    .nr-role { color: #ffffff; font-weight: 900; font-size: 1.2em; }
+
+    /* SECTION */
+    .section { padding: clamp(40px, 6vw, 80px) clamp(24px, 6vw, 80px); max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 11px; letter-spacing: 4px; color: #7abf7a; margin-bottom: 12px; }
+    .section-title { font-size: clamp(22px, 4vw, 36px); font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 36px; line-height: 1.2; }
+
+    /* FLOW */
+    .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--green-dim); border: 1px solid var(--green-dim); margin-bottom: 48px; }
+    .flow-step { background: var(--black); padding: 28px; transition: background 0.2s; }
+    .flow-step:hover { background: #050f05; }
+    .flow-num { font-size: 28px; font-weight: 700; color: var(--green-dim); margin-bottom: 12px; }
+    .flow-title { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 8px; }
+    .flow-text { font-size: 13px; color: #7abf7a; line-height: 1.7; }
+    .flow-text em { color: var(--green); font-style: normal; }
+
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--green-dim); border: 1px solid var(--green-dim); }
+    .feature { background: var(--black); padding: 28px; transition: background 0.2s; }
+    .feature:hover { background: #050f05; }
+    .feature-icon { font-size: 20px; margin-bottom: 12px; display: block; }
+    .feature-title { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 10px; }
+    .feature-text { font-size: 13px; color: #7abf7a; line-height: 1.7; }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 1px; background: var(--green-dim); border: 1px solid var(--green-dim); }
+    .step { background: var(--black); padding: 32px; display: grid; grid-template-columns: 52px 1fr; gap: 20px; align-items: start; transition: background 0.2s; }
+    .step:hover { background: #050f05; }
+    .step-num { font-size: 26px; font-weight: 700; color: var(--green-dim); line-height: 1; }
+    .step-title { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 8px; }
+    .step-text { font-size: 13px; color: #7abf7a; line-height: 1.8; }
+    .step-text em { color: var(--green); font-style: normal; }
+    .divider-line { border: none; border-top: 1px solid var(--green-dim); margin: 40px 0; }
+
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--green-dim); border: 1px solid var(--green-dim); margin-bottom: 32px; }
+    .price-card { background: var(--black); padding: 36px 28px; text-align: center; }
+    .price-role { font-size: 10px; letter-spacing: 4px; color: var(--green-mid); margin-bottom: 12px; }
+    .price-amount { font-size: clamp(36px, 7vw, 60px); font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; }
+    .price-currency { font-size: 18px; vertical-align: super; }
+    .price-when { font-size: 11px; color: #7abf7a; letter-spacing: 1px; margin-bottom: 20px; }
+    .price-features { list-style: none; text-align: left; }
+    .price-features li { font-size: 12px; color: #7abf7a; padding: 5px 0; border-bottom: 1px solid var(--green-dim); line-height: 1.6; }
+    .price-features li::before { content: '-> '; color: var(--green); }
+    .pricing-note { font-size: 13px; color: #7abf7a; line-height: 1.8; border: 1px solid var(--green-dim); padding: 24px 28px; }
+    .pricing-note strong { color: var(--green); }
+
+    /* ABOUT */
+    .about-text { font-size: clamp(14px, 2vw, 16px); color: #7abf7a; line-height: 2; margin-bottom: 24px; max-width: 720px; }
+    .about-text em { color: var(--green); font-style: normal; }
+    .manifesto { border-left: 2px solid var(--green); padding: 20px 28px; margin: 32px 0; }
+    .manifesto p { font-size: clamp(15px, 2.5vw, 20px); color: var(--green); line-height: 1.8; font-weight: 700; letter-spacing: 1px; }
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--green-dim); border: 1px solid var(--green-dim); margin-top: 36px; }
+    .value { background: var(--black); padding: 24px; }
+    .value-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 8px; }
+    .value-text { font-size: 12px; color: #7abf7a; line-height: 1.7; }
+
+    /* LEGAL */
+    .legal-nav { display: flex; gap: 4px; margin-bottom: 36px; flex-wrap: wrap; }
+    .legal-tab { background: none; border: 1px solid var(--green-dim); color: var(--green-mid); font-family: var(--mono); font-size: 11px; letter-spacing: 1px; padding: 8px 16px; cursor: pointer; transition: all 0.2s; }
+    .legal-tab.active, .legal-tab:hover { background: var(--green); color: var(--black); border-color: var(--green); }
+    .legal-content { display: none; }
+    .legal-content.active { display: block; }
+    .legal-section { margin-bottom: 32px; }
+    .legal-section h3 { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--green-dim); }
+    .legal-section p, .legal-section li { font-size: 12px; color: #7abf7a; line-height: 1.9; margin-bottom: 8px; }
+    .legal-section a { color: var(--green); }
+    .legal-section ul { padding-left: 16px; }
+    .legal-section li::marker { color: var(--green); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--green-dim); padding: 28px 24px; text-align: center; }
+    .footer-logo { font-size: 14px; letter-spacing: 4px; color: var(--green-mid); margin-bottom: 6px; }
+    .footer-text { font-size: 10px; color: #ffffff; letter-spacing: 1px; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .step { grid-template-columns: 44px 1fr; gap: 14px; }
+      .step-num { font-size: 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
+    }
+
+    .anim-wrap{width:100%;max-width:560px;margin-bottom:40px}
+    .anim-stage{background:#000;border:1px solid #2a6a2a;overflow:hidden}
+    .anim-topbar{height:38px;border-bottom:1px solid #1a4d1a;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+    .anim-dots{display:flex;gap:7px}
+    .anim-dot{width:7px;height:7px;border:1px solid #1a4d1a;background:transparent;transition:all .3s}
+    .anim-dot.done{background:#1a4d1a;border-color:#1a4d1a}
+    .anim-dot.active{background:#00ff41;border-color:#00ff41}
+    .anim-scenes{position:relative;height:320px}
+    .anim-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 40px;opacity:0;pointer-events:none;transition:opacity .5s ease}
+    .anim-scene.active{opacity:1;pointer-events:all}
+    .anim-lbl{font-size:12px;letter-spacing:4px;color:#00ff41;font-weight:700;margin-bottom:20px;opacity:0;transition:opacity .4s ease}
+    .anim-lbl.show{opacity:1}
+    .anim-visual{margin-bottom:24px;min-height:100px;display:flex;align-items:center;justify-content:center}
+    .anim-txt{font-size:14px;color:#7abf7a;text-align:center;line-height:2;letter-spacing:1px;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
+    .anim-txt.show{opacity:1;transform:translateY(0)}
+    .anim-txt em{color:#00ff41;font-style:normal;font-weight:700}
+    .anim-pbar{height:2px;background:#00ff41;width:0%}
+    .anim-sticker{border:2px solid #ccc;padding:14px 28px;font-size:20px;font-weight:700;letter-spacing:3px;color:#000;background:#fff;display:flex;align-items:center;gap:10px;box-shadow:2px 3px 8px rgba(0,0,0,.4);opacity:0;transform:scale(.85);transition:all .5s cubic-bezier(.34,1.4,.64,1)}
+    .anim-sticker.show{opacity:1;transform:scale(1)}
+    .anim-phone{background:#000;border:1.5px solid #2a6a2a;border-radius:12px;padding:8px;width:160px}
+    .anim-p-notch{width:32px;height:5px;border-radius:3px;background:#0a1a0a;margin:0 auto 7px}
+    .anim-p-screen{background:#020d02;border:1px solid #1a4d1a;border-radius:3px;padding:9px}
+    .anim-p-bar{font-size:7px;letter-spacing:2px;color:#2a6a2a;border-bottom:1px solid #1a4d1a;padding-bottom:5px;margin-bottom:7px}
+    .anim-p-input{border:1px solid #00ff41;padding:5px 7px;font-family:'Share Tech Mono',monospace;font-size:10px;color:#00ff41;background:#000;display:flex;align-items:center;gap:3px;margin-bottom:6px;min-height:24px}
+    .anim-pcursor{display:inline-block;width:5px;height:10px;background:#00ff41;animation:anim-blink 1s step-end infinite;flex-shrink:0}
+    @keyframes anim-blink{0%,100%{opacity:1}50%{opacity:0}}
+    .anim-p-result{padding:6px 7px;border:1px solid #1a4d1a;font-size:9px;color:#fff;font-weight:700;letter-spacing:1px;display:flex;justify-content:space-between;margin-bottom:5px;opacity:0;transition:opacity .3s}
+    .anim-p-result.show{opacity:1}
+    .anim-p-btn{background:#00ff41;color:#000;font-family:'Share Tech Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;padding:6px;text-align:center;opacity:0;transition:opacity .3s}
+    .anim-p-btn.show{opacity:1}
+    .anim-card{background:#000;border:1px solid #00ff41;padding:16px 20px;width:260px;opacity:0;transform:translateY(8px);transition:all .4s ease}
+    .anim-card.show{opacity:1;transform:translateY(0)}
+    .anim-card-from{font-size:9px;letter-spacing:3px;color:#2a6a2a;margin-bottom:6px}
+    .anim-card-nick{font-size:16px;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:10px}
+    .anim-card-msg{font-size:11px;color:#7abf7a;line-height:1.6;border-left:2px solid #1a4d1a;padding-left:8px;margin-bottom:14px}
+    .anim-card-btns{display:flex;gap:8px}
+    .anim-btn-yes{flex:1;padding:11px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:14px;font-weight:900;letter-spacing:3px;background:#000;color:#fff;border:2px solid #00ff41;transition:all .3s}
+    .anim-btn-yes.lit{background:#00ff41;color:#000;box-shadow:0 0 20px rgba(0,255,65,.4)}
+    .anim-btn-no{flex:1;padding:11px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:3px;color:#1a4d1a;border:1px solid #1a4d1a}
+    .anim-match{position:absolute;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;opacity:0;pointer-events:none;transition:opacity .4s;z-index:5}
+    .anim-match.show{opacity:1}
+    .anim-match-word{font-size:52px;font-weight:900;letter-spacing:10px;color:#00ff41;text-shadow:0 0 40px rgba(0,255,65,.5);transform:scale(.8);transition:transform .4s cubic-bezier(.34,1.56,.64,1) .1s}
+    .anim-match.show .anim-match-word{transform:scale(1)}
+    .anim-match-sub{font-size:12px;letter-spacing:3px;color:#fff;font-weight:700;opacity:0;transition:opacity .4s ease .4s}
+    .anim-match.show .anim-match-sub{opacity:1}
+    .anim-chat{width:280px}
+    .anim-chat-head{background:#000;border:1px solid #00ff41;padding:9px 12px;display:flex;justify-content:space-between;align-items:center}
+    .anim-chat-nick{font-size:13px;color:#fff;font-weight:700;letter-spacing:2px}
+    .anim-chat-timer{font-size:11px;color:#00ff41;font-weight:700;font-variant-numeric:tabular-nums}
+    .anim-chat-body{background:#000;border:1px solid #1a4d1a;border-top:none;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:110px}
+    .anim-cm{max-width:78%;padding:7px 11px;font-size:11px;line-height:1.6;opacity:0;transition:opacity .4s ease,transform .4s ease}
+    .anim-cm.t{background:#050f05;border:1px solid #1a4d1a;color:#7abf7a;align-self:flex-start;transform:translateX(-6px)}
+    .anim-cm.m{background:#00ff41;color:#000;font-weight:700;align-self:flex-end;transform:translateX(6px)}
+    .anim-cm.show{opacity:1;transform:translateX(0)}
+    .anim-fin-logo{font-size:28px;font-weight:700;letter-spacing:8px;color:#00ff41;text-shadow:0 0 30px rgba(0,255,65,.25);opacity:0;transform:scale(.92);transition:all .6s ease;text-align:center}
+    .anim-fin-logo.show{opacity:1;transform:scale(1);margin-bottom:24px}
+    .anim-fin-stats{display:flex;gap:1px;background:#1a4d1a;border:1px solid #1a4d1a;opacity:0;transition:opacity .5s ease}
+    .anim-fin-stats.show{opacity:1}
+    .anim-fs{background:#000;padding:10px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:70px}
+    .anim-fsv{font-size:18px;font-weight:700;color:#00ff41;display:block}
+    .anim-fsl{font-size:9px;letter-spacing:2px;color:#7abf7a}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">nickradar</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">home</button>
+    <button class="nav-link" onclick="showPage('how')">how it works</button>
+    <button class="nav-link" onclick="showPage('pricing')">pricing</button>
+    <button class="nav-link" onclick="showPage('about')">about</button>
+    <button class="nav-link" onclick="showPage('clubs')">events</button>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="nav-link" onclick="showPage('home'); toggleMenu()">home</button>
+  <button class="nav-link" onclick="showPage('how'); toggleMenu()">how it works</button>
+  <button class="nav-link" onclick="showPage('pricing'); toggleMenu()">pricing</button>
+  <button class="nav-link" onclick="showPage('about'); toggleMenu()">about</button>
+  <button class="nav-link" onclick="showPage('clubs'); toggleMenu()">events</button>
+</div>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <img src="/nr_logo_white.png" style="width:56px;height:56px;object-fit:contain;margin-bottom:16px;opacity:0.9;" />
+      <div class="hero-logo">nickradar</div>
+      <div style="font-size:12px;letter-spacing:4px;color:#fff;margin:12px 0 36px;">contacting nicknames around you</div>
+      <div class="anim-wrap">
+        <div class="anim-stage">
+          <div class="anim-topbar">
+            <div></div>
+            <div class="anim-dots">
+              <div class="anim-dot active"></div>
+              <div class="anim-dot"></div>
+              <div class="anim-dot"></div>
+              <div class="anim-dot"></div>
+            </div>
+          </div>
+          <div class="anim-scenes">
+            <div class="anim-scene active" id="as1">
+              <div class="anim-lbl" id="as1-lbl">// 01 — you see the nickname</div>
+              <div class="anim-visual">
+                <div class="anim-sticker" id="as1-sticker">
+                  <img src="data:image/png;base64,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" style="width:20px;height:20px;object-fit:contain;flex-shrink:0;" /><span>lisa_berlin</span>
+                </div>
+              </div>
+              <div class="anim-txt" id="as1-txt">you see a sticker on someone's bag.<br><em>a nickradar nickname.</em></div>
+            </div>
+            <div class="anim-scene" id="as2">
+              <div class="anim-lbl" id="as2-lbl">// 02 — open nickradar</div>
+              <div class="anim-visual">
+                <div class="anim-phone">
+                  <div class="anim-p-notch"></div>
+                  <div class="anim-p-screen">
+                    <div class="anim-p-bar">nickradar // search</div>
+                    <div class="anim-p-input"><span id="as2-typed"></span><span class="anim-pcursor"></span></div>
+                    <div class="anim-p-result" id="as2-res"><span>lisa_berlin</span><span style="color:#00ff41">&#8594;</span></div>
+                    <div class="anim-p-btn" id="as2-btn">[ SEND REQUEST ]</div>
+                  </div>
+                </div>
+              </div>
+              <div class="anim-txt" id="as2-txt">request. <em>free to send.</em> pay only on <strong style="color:#fff;font-weight:900">YES</strong>.</div>
+            </div>
+            <div class="anim-scene" id="as3">
+              <div class="anim-lbl" id="as3-lbl">// 03 — lisa decides</div>
+              <div class="anim-visual">
+                <div class="anim-card" id="as3-card">
+                  <div class="anim-card-from">// request from</div>
+                  <div class="anim-card-nick">alex_ibk</div>
+                  <div class="anim-card-msg">"we were on the same tram :)"</div>
+                  <div class="anim-card-btns">
+                    <div class="anim-btn-yes" id="as3-yes">YES</div>
+                    <div class="anim-btn-no">NO</div>
+                  </div>
+                </div>
+              </div>
+              <div class="anim-txt" id="as3-txt">12h to respond. full control. always.</div>
+              <div class="anim-match" id="as3-match">
+                <div class="anim-match-word">MATCH!</div>
+                <div class="anim-match-sub">48h chat opens now</div>
+              </div>
+            </div>
+            <div class="anim-scene" id="as4">
+              <div class="anim-lbl" id="as4-lbl">// 04 — chat time!</div>
+              <div class="anim-visual">
+                <div class="anim-chat">
+                  <div class="anim-chat-head">
+                    <span class="anim-chat-nick">lisa_berlin</span>
+                    <span class="anim-chat-timer" id="as4-timer">47:59:58</span>
+                  </div>
+                  <div class="anim-chat-body">
+                    <div class="anim-cm t" id="am1">happy you wrote! 😄</div>
+                    <div class="anim-cm m" id="am2">coffee saturday?</div>
+                    <div class="anim-cm t" id="am3">café munde, 15:00 ☕</div>
+                  </div>
+                </div>
+              </div>
+              <div class="anim-txt" id="as4-txt">talk. meet. <em>48 hours time.</em></div>
+            </div>
+
+          </div>
+          <div class="anim-pbar" id="apbar"></div>
+        </div>
+      </div>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="goToApp()">[ download app ]</button>
+      </div>
+    </div>
+    <div class="hero-scroll">v scroll</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-value">12h</span><span class="stat-label">request time</span></div>
+    <div class="stat"><span class="stat-value">48h</span><span class="stat-label">chat time</span></div>
+    <div class="stat"><span class="stat-value">0</span><span class="stat-label">algorithms</span></div>
+    <div class="stat"><span class="stat-value">0</span><span class="stat-label">subscriptions</span></div>
+    <div class="stat"><span class="stat-value">€3.00</span><span class="stat-label">⚡ <span class="nr-role">seeker</span> / match</span></div>
+    <div class="stat"><span class="stat-value">€1.50</span><span class="stat-label">🎯 <span class="nr-role">target</span> / match</span></div>
+    <div class="stats-note">no match — <em>no charge.</em> you only pay when both say <span class="nr-yes">YES</span>.</div>
+    <div class="stats-note" style="border-top:1px solid var(--green-dim);">payments 100% secure &amp; handled by  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 60 25" aria-label="Stripe" style="vertical-align:middle;"><rect width="60" height="25" rx="4" fill="#635BFF"/><text x="30" y="17" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">stripe</text></svg></div>
+  </div>
+
+  <div class="section" style="padding-top: clamp(100px, 16vw, 200px);">
+    <div class="section-label">// why nickradar</div>
+    <div class="section-title">real life first.<br>digital second.</div>
+
+    <div class="features-grid">
+      <div class="feature">
+        <span class="feature-icon"><i class="fa-solid fa-eye" style="font-size:15px;"></i></span>
+        <div class="feature-title">no swiping. no algorithm.</div>
+        <div class="feature-text">you meet in real life first — then you connect. we decide nothing for you. <span class="nr-yes">REALITY IS THE STARTING POINT.</span></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">@</span>
+        <div class="feature-title">the nickname is the key</div>
+        <div class="feature-text">wear it on a sticker, a patch, anywhere. one nickname, one signal: <span class="nr-yes">OPEN TO CONTACT.</span></div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">&gt;&lt;</span>
+        <div class="feature-title">pay only on match</div>
+        <div class="feature-text">no subscriptions. no hidden fees. <span class="nr-yes">MONEY FLOWS ONLY WHEN BOTH GENUINELY WANT TO CONNECT.</span> no match — no cost. for anyone.</div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">⇌</span>
+        <div class="feature-title">equal rights. always.</div>
+        <div class="feature-text"><span class="nr-role">seeker</span> and <span class="nr-role">target</span> have the same rights. both decide freely — <span class="nr-yes">YES</span>, no, or block. nobody has more power. fair by design.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><div class="footer-logo" style="margin-bottom:0;">nickradar</div><a href="https://www.facebook.com/profile.php?id=61588052450936" target="_blank" rel="noopener" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#7abf7a"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div>
+    <div class="footer-text">&copy; 2026 nickradar — austria</div>
+    <div style="margin-top:12px;"><button style="background:none;border:none;color:var(--green-mid);font-family:var(--mono);font-size:12px;letter-spacing:3px;cursor:pointer;font-weight:700;" onclick="showPage('legal')">legal</button></div>
+  </footer>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="page" id="page-how">
+  <div class="section">
+    <div style="font-size:16px;font-weight:700;letter-spacing:3px;color:#ffffff;margin-bottom:16px;">⚡ seeker meets target 🎯</div>
+    <div class="section-title">one moment.<br>real.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">spot the nickname</div>
+          <div class="step-text">
+            someone shows their NR nickname — sticker, patch, t-shirt, phone case, bike, bag. anything.<br><br>
+            example:<br><span style="display:inline-block; margin-top:6px; font-family:monospace;"><span class="nr-yes"><img src="nr_logo_white.png" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;margin-bottom:2px;"> lisa_berlin</span><br><span class="nr-yes"><img src="nr_logo_white.png" style="width:13px;height:13px;vertical-align:middle;margin-right:5px;margin-bottom:2px;"> alex_ibk</span></span><br><br>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">search and send a request</div>
+          <div class="step-text">
+            open nickradar, type the nickname, you are the <span class="nr-role">Seeker</span> now, check the profile, send a <span class="nr-cr">CONTACTING REQUEST</span>.<br><br>
+            <em>sending is free. you only pay if the <span class="nr-role">Target</span> says <span class="nr-yes">YES</span>.</em>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title"><span style="color:#ffffff;font-weight:900;">Target</span> responds — or not</div>
+          <div class="step-text">
+            the request is active for <em>12 hours</em>. three outcomes:<br><br>
+            <span class="nr-yes">YES</span> =&gt; both pay, 48h chat opens immediately.<br>
+            <span class="nr-yes">NO</span> =&gt; request denied. permanently blocked, both directions. no charge.<br>
+            <span class="nr-yes">NO REPLY</span> =&gt; expires after 12h. no charge. both can try again.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">48 hours to connect</div>
+          <div class="step-text">
+            talk, agree to meet, exchange numbers, e-mail addresses — whatever makes sense.<br><br>
+            <em>after 48h the chat disappears forever.</em> <span class="nr-yes">NICKRADAR'S JOB IS DONE.</span> what comes next is up to you.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="section-label">// your nickname</div>
+    <div class="section-title">show it.<br>anywhere.</div>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-title">your nickname. your medium.</div>
+        <div class="feature-text">sticker, patch, t-shirt, key ring, car sticker, business card. <span class="nr-yes">YOUR NICKNAME IS YOUR SIGNAL</span> that you're open to being contacted.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">you always decide</div>
+        <div class="feature-text">showing your nickname doesn't mean saying <span class="nr-yes">YES</span> to anyone. every request, every time — full control, always.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">print your nickname</div>
+        <div class="feature-text">go to mynick → <span class="nr-yes">PRINT NICKNAME</span> in the app. and print with or without <span class="nr-yes">QR CODE</span>. done in seconds.<br><br>need a blank sticker to fill in by hand? → <a href="/stickers.html" target="_blank" style="color:var(--green-mid);font-family:var(--mono);letter-spacing:2px;text-decoration:underline;">print empty sticker</a></div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><div class="footer-logo" style="margin-bottom:0;">nickradar</div><a href="https://www.facebook.com/profile.php?id=61588052450936" target="_blank" rel="noopener" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#7abf7a"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div>
+    <div class="footer-text">&copy; 2026 nickradar — austria</div>
+    <div style="margin-top:12px;"><button style="background:none;border:none;color:var(--green-mid);font-family:var(--mono);font-size:12px;letter-spacing:3px;cursor:pointer;font-weight:700;" onclick="showPage('legal')">legal</button></div>
+  </footer>
+</div>
+
+
+<!-- CLUBS & NICKRADAR PARTIES -->
+<div class="page" id="page-clubs">
+  <div class="section">
+    <div style="position:relative;">
+      <div id="clubs-badge" style="position:absolute;top:0;right:0;width:90px;height:90px;border:1px solid #1a4d1a;overflow:hidden;font-family:monospace;">
+        <canvas id="clubs-rain" style="position:absolute;inset:0;z-index:1;"></canvas>
+        <div style="position:absolute;width:6px;height:6px;border-top:1px solid #00ff41;border-left:1px solid #00ff41;top:4px;left:4px;z-index:5;"></div>
+        <div style="position:absolute;width:6px;height:6px;border-top:1px solid #00ff41;border-right:1px solid #00ff41;top:4px;right:4px;z-index:5;"></div>
+        <div style="position:absolute;width:6px;height:6px;border-bottom:1px solid #00ff41;border-left:1px solid #00ff41;bottom:26px;left:4px;z-index:5;"></div>
+        <div style="position:absolute;width:6px;height:6px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;bottom:26px;right:4px;z-index:5;"></div>
+        <div id="events-rotate-label" style="position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:10px;letter-spacing:2px;color:#000;font-weight:900;z-index:4;background:#00ff41;padding:5px 0;transition:opacity 0.3s;">EVENTS</div>
+<script>(function(){var w=["EVENTS","FESTIVALS","CLUBS","UNI PARTIES"],i=0;var el=document.getElementById("events-rotate-label");setInterval(function(){i=(i+1)%w.length;el.style.opacity="0";setTimeout(function(){el.textContent=w[i];el.style.opacity="1";},300);},2000);})();</script>
+      </div>
+    </div>
+    <div class="section-label">// nickradar parties</div>
+    <div class="section-title">this is where<br>fun happens.</div>
+
+    <div style="font-size:13px;color:#7abf7a;line-height:1.7;margin-bottom:8px;margin-top:80px;text-align:center;">events where everyone plays. all nicknames visible. all rules active. <span class="nr-yes">THE WHOLE ROOM IS THE GAME!</span></div>
+
+    <div style="border:1px solid #00ff41;padding:28px 36px;max-width:600px;margin:32px auto 0;text-align:center;">
+      <div style="font-size:16px;font-weight:700;letter-spacing:3px;color:#ffffff;margin-bottom:14px;">🎉 party mode</div>
+      <div style="font-size:17px;font-weight:700;color:#00ff41;letter-spacing:2px;margin-bottom:14px;">at social events — it's free.</div>
+      <div style="font-size:13px;color:#7abf7a;line-height:1.9;">festivals, clubs, bars, universities give you as a guest a <span style="color:#ffffff;font-weight:700;">PARTY CODE.</span> you enter it in the app — and for the entire event, all requests are free.</div>
+    </div>
+
+    <div style="max-width:600px;margin:32px auto 0;">
+      <img src="https://app.nickradar.com/nickname_party_innsbruck.png" style="width:100%;display:block;" alt="Nickname Party Innsbruck" />
+    </div>
+
+    <div style="font-size:13px;color:#7abf7a;line-height:1.7;margin-top:64px;text-align:center;">Are you an Event Organizer?<br>(Festival, Club, Bar, University)<br>Here goes to the nickradar <a href="https://events.nickradar.com/" target="_blank" style="color:#7abf7a;text-decoration:underline;">Partner Area</a></div>
+
+  </div>
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><div class="footer-logo" style="margin-bottom:0;">nickradar</div><a href="https://www.facebook.com/profile.php?id=61588052450936" target="_blank" rel="noopener" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#7abf7a"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div>
+    <div class="footer-text">&copy; 2026 nickradar — austria</div>
+    <div style="margin-top:12px;"><button style="background:none;border:none;color:var(--green-mid);font-family:var(--mono);font-size:12px;letter-spacing:3px;cursor:pointer;font-weight:700;" onclick="showPage('legal')">legal</button></div>
+  </footer>
+</div>
+
+<!-- PRICING -->
+<div class="page" id="page-pricing">
+  <div class="section">
+    <div class="section-label">// transparent pricing</div>
+    <div class="section-title">you pay only<br>if you match.</div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-role"><span class="nr-role">seeker</span></div>
+        <div class="price-amount"><span class="price-currency">€</span>3.00</div>
+        <div class="price-when">charged only on <span class="nr-yes">YES</span></div>
+        <ul class="price-features">
+          <li>registration free</li>
+          <li>send requests for free</li>
+          <li>personal message + location included</li>
+          <li>pay only if <span class="nr-role">target</span> says <span class="nr-yes">YES</span></li>
+          <li>48h chat on match</li>
+          <li>block is always possible</li>
+          <li>no charge if ignored or declined</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="price-role"><span class="nr-role">target</span></div>
+        <div class="price-amount"><span class="price-currency">€</span>1.50</div>
+        <div class="price-when">charged only on <span class="nr-yes">YES</span></div>
+        <ul class="price-features">
+          <li>registration free</li>
+          <li>receive requests for free</li>
+          <li>read message + see profile &amp; location before deciding</li>
+          <li>pay only if you say <span class="nr-yes">YES</span></li>
+          <li>48h chat on match</li>
+          <li>block is always possible</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pricing-note">
+      <strong>// why do both sides pay?</strong><br><br>
+      if only the seeker paid, a target could say <span class="nr-yes">YES</span> to everyone without consequences.<br>
+      if only the target paid, seekers could spam for free.<br><br>
+      when <strong>both pay, both are serious.</strong> every <span class="nr-yes">YES</span> means something real — on both sides. no exploitation possible. that's what makes nickradar genuinely fair.
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-title">free to start</div>
+        <div class="feature-text">download, register, create your nickname — all free. no payment needed until your first <span class="nr-cr">CONTACTING REQUEST</span>.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">credit card via stripe</div>
+        <div class="feature-text">payment required when you send your first request (<span class="nr-role">seeker</span>) or say <span class="nr-yes">YES</span> for the first time (<span class="nr-role">target</span>). secure, handled by Stripe.</div>
+        <div style="margin-top:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="25" viewBox="0 0 60 25" aria-label="Stripe">
+            <rect width="60" height="25" rx="4" fill="#635BFF"/>
+            <text x="30" y="17" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="1">stripe</text>
+          </svg>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-title">no subscriptions. ever.</div>
+        <div class="feature-text"><span class="nr-yes">NO MONTHLY FEES. NO FREEMIUM LIMITS. NO PREMIUM TIER. YOU PAY PER MATCH — AND ONLY WHEN IT HAPPENS.</span></div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><div class="footer-logo" style="margin-bottom:0;">nickradar</div><a href="https://www.facebook.com/profile.php?id=61588052450936" target="_blank" rel="noopener" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#7abf7a"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div>
+    <div class="footer-text">&copy; 2026 nickradar — austria</div>
+    <div style="margin-top:12px;"><button style="background:none;border:none;color:var(--green-mid);font-family:var(--mono);font-size:12px;letter-spacing:3px;cursor:pointer;font-weight:700;" onclick="showPage('legal')">legal</button></div>
+  </footer>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="section">
+    <div class="section-label">// our story</div>
+    <div class="section-title">built for<br>real life.</div>
+
+    <div class="about-text">
+      real life is full of interesting people — on trains, in cafes, at events. but there's no respectful, low-pressure way to say <em>"I'd like to stay in touch."</em>
+    </div>
+    <div class="about-text">
+      existing apps put you in a digital bubble before you've ever met anyone. nickradar works the opposite way: <em>you meet first. then you connect.</em>
+    </div>
+
+    <div class="manifesto">
+      <p>"only the moment counts.<br>12h request. 48h chat."</p>
+    </div>
+
+    <div class="about-text">
+      nickradar is not a chat community. not a dating app in the traditional sense. it's a <em>contacting platform</em> — built around real encounters, real moments, and a simple nickname you carry into the world.
+    </div>
+    <div class="about-text">
+      bootstrapped. based in austria. built with eu values: <em>privacy first. no dark patterns. no algorithm.</em>
+    </div>
+    <div class="about-text">
+      my nickname is <em>luigi_ibk</em> — i built this because real life deserves better tools.
+    </div>
+
+  </div>
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><div class="footer-logo" style="margin-bottom:0;">nickradar</div><a href="https://www.facebook.com/profile.php?id=61588052450936" target="_blank" rel="noopener" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#7abf7a"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div>
+    <div class="footer-text">&copy; 2026 nickradar — austria</div>
+    <div style="margin-top:12px;"><button style="background:none;border:none;color:var(--green-mid);font-family:var(--mono);font-size:12px;letter-spacing:3px;cursor:pointer;font-weight:700;" onclick="showPage('legal')">legal</button></div>
+  </footer>
+</div>
+
+<!-- LEGAL -->
+<div class="page" id="page-legal">
+  <div class="section">
+    <div class="section-label">// legal</div>
+    <div class="section-title">transparency<br>is non-negotiable.</div>
+
+    <div class="legal-nav">
+      <button class="legal-tab active" onclick="showLegal('impressum', event)">Imprint</button>
+      <button class="legal-tab" onclick="showLegal('datenschutz', event)">Privacy Policy</button>
+      <button class="legal-tab" onclick="showLegal('agb', event)">Terms of Service</button>
+    </div>
+
+    <!-- IMPRINT -->
+    <div class="legal-content active" id="legal-impressum">
+      <div class="legal-section">
+        <h3>Legal Disclosure pursuant to § 5 ECG (Austrian E-Commerce Act)</h3>
+        <p>
+          nickradar.com — a Project of:<br><br>
+          Luigi La Macchia<br>
+          Badhausstraße 3<br>
+          6080 Innsbruck<br>
+          Austria<br><br>
+          Email: <a href="#" onclick="window.location.href='mai'+'lto:info@nickradar.com';return false;" style="color:var(--green);"><span class="__cf_email__" data-cfemail="c1a8afa7ae81afa8a2aab3a0a5a0b3efa2aeac">[email&#160;protected]</span></a><br>
+          Web: <a href="https://www.nickradar.com">www.nickradar.com</a>
+        </p>
+      </div>
+      <div class="legal-section">
+        <h3>Business Purpose</h3>
+        <p>Operation of a digital contacting platform. nickradar facilitates contact attempts between registered users based on publicly visible nicknames.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Supervisory Authority</h3>
+        <p>Magistrat der Landeshauptstadt Innsbruck<br>
+        Maria-Theresien-Straße 18, 6020 Innsbruck, Austria</p>
+      </div>
+      <div class="legal-section">
+        <h3>Disclaimer</h3>
+        <p>The contents of this website have been created with the utmost care. However, we cannot guarantee the accuracy, completeness, or timeliness of the content. nickradar is not liable for content published or exchanged by users on the platform.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Copyright</h3>
+        <p>All content published on this website is subject to Austrian copyright law. Any reproduction, editing, or distribution beyond the limits of copyright law requires the written consent of the respective author or creator.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Online Dispute Resolution (EU)</h3>
+        <p>The European Commission provides a platform for online dispute resolution:<br>
+        <a href="https://ec.europa.eu/consumers/odr" target="_blank">https://ec.europa.eu/consumers/odr</a><br><br>
+        We are neither obligated nor willing to participate in dispute resolution proceedings before a consumer arbitration board.</p>
+      </div>
+    </div>
+
+    <!-- PRIVACY POLICY -->
+    <div class="legal-content" id="legal-datenschutz">
+      <div class="legal-section">
+        <h3>Controller</h3>
+        <p>nickradar, Austria — <a href="#" onclick="window.location.href='mai'+'lto:info@nickradar.com';return false;" style="color:var(--green);"><span class="__cf_email__" data-cfemail="93fafdf5fcd3fdfaf0f8e1f2f7f2e1bdf0fcfe">[email&#160;protected]</span></a></p>
+      </div>
+      <div class="legal-section">
+        <h3>Data We Collect</h3>
+        <ul>
+          <li>Nickname, email address, date of birth upon registration</li>
+          <li>Optional profile information (bio, profile picture)</li>
+          <li>IP address upon registration (security purposes)</li>
+          <li>Location data at the time of each message sent</li>
+          <li>Payment data exclusively via Stripe — we do not store full card details</li>
+          <li>Chat messages (90 days for legal purposes, then automatically deleted)</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>Location Data</h3>
+        <p>Location data is collected exclusively at the time a message is sent and displayed to the chat partner. No continuous location tracking takes place.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Legal Basis</h3>
+        <p>Art. 6(1)(b) GDPR (performance of contract) and Art. 6(1)(f) GDPR (legitimate interests). Location data is processed on the basis of explicit consent pursuant to Art. 6(1)(a) GDPR.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Data Sharing</h3>
+        <p>No automatic sharing with third parties. Data is only exchanged between chat participants. Exception: location data is automatically transmitted within an active chat.</p>
+        <p>In cases involving criminal offences, data may be disclosed upon official request.</p>
+      </div>
+      <div class="legal-section">
+        <h3>Your Rights</h3>
+        <ul>
+          <li>Access (Art. 15), Rectification (Art. 16), Erasure (Art. 17)</li>
+          <li>Restriction (Art. 18), Objection (Art. 21 GDPR)</li>
+        </ul>
+        <p>Requests: <a href="#" onclick="window.location.href='mai'+'lto:info@nickradar.com';return false;" style="color:var(--green);"><span class="__cf_email__" data-cfemail="9ff6f1f9f0dff1f6fcf4edfefbfeedb1fcf0f2">[email&#160;protected]</span></a></p>
+      </div>
+      <div class="legal-section">
+        <h3>Third-Party Providers</h3>
+        <p><strong>Stripe</strong> for payment processing: <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a></p>
+      </div>
+      <div class="legal-section">
+        <h3>Data Security</h3>
+        <p>HTTPS encryption. Passwords hashed with bcrypt. JWT authentication.</p>
+      </div>
+    </div>
+
+    <!-- TERMS OF SERVICE -->
+    <div class="legal-content" id="legal-agb">
+      <div class="legal-section">
+        <h3>§ 1 Scope</h3>
+        <p>These Terms of Service apply to the use of the nickradar platform at nickradar.com and app.nickradar.com. By registering, you accept these terms in full.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 2 Registration</h3>
+        <ul>
+          <li>Minimum age: 18 years</li>
+          <li>Registration and app download are free</li>
+          <li>One account per person</li>
+          <li>Nickname must be unique and non-offensive (max. 20 characters)</li>
+          <li>A valid email address is required</li>
+          <li>Payment method is only required upon first <span class="nr-cr">CONTACTING REQUEST</span> (<span class="nr-role">Seeker</span>) or first <span class="nr-yes">YES</span> (<span class="nr-role">Target</span>)</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>§ 3 Pricing and Payment</h3>
+        <ul>
+          <li><span class="nr-role">Seeker</span>: EUR 3.00 per <span class="nr-cr">CONTACTING REQUEST</span> — charged only on mutual <span class="nr-yes">YES</span></li>
+          <li><span class="nr-role">Target</span>: EUR 1.50 per acceptance (<span class="nr-yes">YES</span>) — charged only on own <span class="nr-yes">YES</span></li>
+          <li>No match — no cost for either party</li>
+          <li>Automatic payment via Stripe upon mutual <span class="nr-yes">YES</span></li>
+          <li>No refunds after a successful match and chat start</li>
+          <li>No subscriptions, no hidden costs</li>
+          <li>nickradar reserves the right to adjust prices at any time. Registered users will be informed in advance.</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>§ 4 Contacting Rules</h3>
+        <ul>
+          <li>Requests remain active for 12 hours</li>
+          <li>A mutual <span class="nr-yes">YES</span> opens a 48-hour chat</li>
+          <li>NO: permanent mutual block — no further interactions possible</li>
+          <li>EXPIRED (no reply): no cost — both parties may send new requests</li>
+          <li>No reply does not count as rejection</li>
+          <li>Accounts without any completed transaction within 6 months of registration are automatically deactivated and deleted after a further 90 days — nickname is released</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>§ 5 Community Rules</h3>
+        <ul>
+          <li>No harassment, no spam, no abuse</li>
+          <li>No false information about yourself</li>
+          <li>No commercial activities without permission</li>
+          <li>No sharing of illegal or discriminatory content</li>
+          <li>Each user is responsible for their messages and profile content</li>
+          <li>Violations result in immediate and permanent account suspension</li>
+        </ul>
+      </div>
+      <div class="legal-section">
+        <h3>§ 6 Awareness and Personal Responsibility</h3>
+        <p>By publicly displaying an NR nickname, the user explicitly agrees to being contactable via nickradar — and also to potentially being approached in person, including by strangers.</p>
+        <p>nickradar is not liable for events that occur between users. Each user acts at their own responsibility.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 7 Platform Liability</h3>
+        <p>nickradar provides technical infrastructure only. nickradar is not a party to contacts between users and is not liable for any resulting damages.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 8 Termination and Deletion</h3>
+        <p>Account can be deleted at any time in the app. Accounts without any completed transaction within 6 months of registration are automatically deactivated. All data is permanently deleted after a further 90 days. Re-registration is possible at any time — however, the original nickname may already be taken. nickradar reserves the right to suspend accounts for violations without prior notice.</p>
+      </div>
+      <div class="legal-section">
+        <h3>§ 9 Applicable Law</h3>
+        <p>Austrian law applies. Place of jurisdiction: Austria.</p>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;"><div class="footer-logo" style="margin-bottom:0;">nickradar</div><a href="https://www.facebook.com/profile.php?id=61588052450936" target="_blank" rel="noopener" style="display:flex;align-items:center;opacity:0.5;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#7abf7a"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div>
+    <div class="footer-text">&copy; 2026 nickradar — austria</div>
+    <div style="margin-top:12px;"><button style="background:none;border:none;color:var(--green-mid);font-family:var(--mono);font-size:12px;letter-spacing:3px;cursor:pointer;font-weight:700;" onclick="showPage('legal')">legal</button></div>
+  </footer>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+  // Clubs badge matrix rain
+  (function() {
+    var canvas = document.getElementById('clubs-rain');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    canvas.width = 90; canvas.height = 90;
+    var cols = Math.floor(90/9);
+    var drops = Array(cols).fill(0);
+    var chars = '01アイウカキNR◈◎⬡';
+    function draw() {
+      ctx.fillStyle = 'rgba(0,0,0,0.1)';
+      ctx.fillRect(0,0,90,90);
+      drops.forEach(function(y,i) {
+        var char = chars[Math.floor(Math.random()*chars.length)];
+        var b = Math.random();
+        ctx.fillStyle = b > 0.95 ? '#ffffff' : b > 0.6 ? '#00ff41' : '#1a4d1a';
+        ctx.font = '8px Courier New';
+        ctx.fillText(char, i*9+1, y);
+        if (y > 65 && Math.random() > 0.9) drops[i] = 0;
+        else drops[i] = y + 9;
+      });
+    }
+    setInterval(draw, 80);
+  })();
+  function goToApp() {
+    if (typeof umami !== 'undefined') umami.track('go_to_app');
+    window.location.href = 'https://app.nickradar.com';
+  }
+  function toggleMenu() {
+    var menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('open');
+  }
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    var active = document.querySelector('.nav-link.active');
+    if (active) active.classList.remove('active');
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(function(l) { if (l.textContent.trim() === name) l.classList.add('active'); });
+    window.scrollTo(0, 0);
+    if (typeof umami !== 'undefined') umami.track('page', { name: name });
+  }
+  function showLegal(tab, e) {
+    if (e) e.preventDefault();
+    document.querySelectorAll('.legal-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelectorAll('.legal-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.getElementById('legal-' + tab).classList.add('active');
+    if (e && e.target) e.target.classList.add('active');
+  }
+</script>
+<script>
+(function(){
+  var cur=1,timers=[],chatTick=null;
+  var DUR=[11000,10000,13000,9000,9000];
+  function pad(n){return String(n).padStart(2,'0');}
+  function kill(){timers.forEach(function(t){clearTimeout(t);clearInterval(t);});timers=[];if(chatTick){clearInterval(chatTick);chatTick=null;}}
+  function after(ms,fn){var t=setTimeout(fn,ms);timers.push(t);}
+  function ashow(id,delay){var el=document.getElementById(id);if(!el)return;el.classList.remove('show');after(delay,function(){el.classList.add('show');});}
+  function goToA(n){
+    kill();
+    document.getElementById('as'+cur).classList.remove('active');
+    cur=n;
+    document.getElementById('as'+n).classList.add('active');
+    document.querySelectorAll('.anim-dot').forEach(function(d,i){d.classList.remove('active','done');if(i+1===n)d.classList.add('active');else if(i+1<n)d.classList.add('done');});
+    var bar=document.getElementById('apbar');
+    bar.style.transition='none';bar.style.width='0%';
+    setTimeout(function(){bar.style.transition='width '+DUR[n-1]+'ms linear';bar.style.width='100%';},40);
+    [null,as1,as2,as3,as4][n]();
+    after(DUR[n-1],function(){goToA(n<4?n+1:1);});
+  }
+  function as1(){
+    var el=document.getElementById('as1-sticker');el.classList.remove('show');
+    ashow('as1-lbl',200);
+    after(400,function(){el.classList.add('show');});
+    ashow('as1-txt',1400);
+  }
+  function as2(){
+    var typed=document.getElementById('as2-typed');
+    var res=document.getElementById('as2-res');
+    var btn=document.getElementById('as2-btn');
+    typed.textContent='';res.classList.remove('show');btn.classList.remove('show');
+    ashow('as2-lbl',200);
+    after(600,function(){
+      var text='lisa_berlin',i=0;
+      var t=setInterval(function(){typed.textContent+=text[i];i++;if(i>=text.length){clearInterval(t);after(300,function(){res.classList.add('show');});after(700,function(){btn.classList.add('show');});}},120);
+      timers.push(t);
+    });
+    ashow('as2-txt',2800);
+  }
+  function as3(){
+    var card=document.getElementById('as3-card');
+    var yes=document.getElementById('as3-yes');
+    var match=document.getElementById('as3-match');
+    card.classList.remove('show');yes.classList.remove('lit');match.classList.remove('show');
+    ashow('as3-lbl',200);
+    after(400,function(){card.classList.add('show');});
+    ashow('as3-txt',1200);
+    after(3800,function(){yes.classList.add('lit');});
+    after(7000,function(){
+      match.classList.add('show');
+      document.getElementById('as3-lbl').classList.remove('show');
+      document.getElementById('as3-txt').classList.remove('show');
+    });
+    after(13000,function(){goToA(4);});
+  }
+  function as4(){
+    ['am1','am2','am3'].forEach(function(id){document.getElementById(id).classList.remove('show');});
+    ashow('as4-lbl',200);
+    ashow('am1',800);ashow('am2',2400);ashow('am3',4000);
+    ashow('as4-txt',5500);
+    var secs=47*3600+59*60+58;
+    var el=document.getElementById('as4-timer');
+    chatTick=setInterval(function(){secs--;el.textContent=pad(Math.floor(secs/3600))+':'+pad(Math.floor((secs%3600)/60))+':'+pad(secs%60);},1000);
+  }
+
+  goToA(1);
+})();
+</script>
+<script defer src="https://analytics.nickradar.com/script.js" data-website-id="00d87254-9494-4939-a633-840abf0f574b"></script>
+
+<div id="locations-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;justify-content:center;align-items:center;" onclick="this.style.display='none'">
+  <div style="border:1px solid #00ff41;padding:40px 50px;max-width:420px;width:90%;text-align:center;position:relative;font-family:'Share Tech Mono',monospace;">
+    <div style="position:absolute;top:8px;left:8px;width:10px;height:10px;border-top:1px solid #00ff41;border-left:1px solid #00ff41;"></div>
+    <div style="position:absolute;top:8px;right:8px;width:10px;height:10px;border-top:1px solid #00ff41;border-right:1px solid #00ff41;"></div>
+    <div style="position:absolute;bottom:8px;left:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-left:1px solid #00ff41;"></div>
+    <div style="position:absolute;bottom:8px;right:8px;width:10px;height:10px;border-bottom:1px solid #00ff41;border-right:1px solid #00ff41;"></div>
+    <div style="font-size:10px;letter-spacing:4px;color:#2a6a2a;margin-bottom:24px;">// OFFICIAL NICKRADAR LOCATIONS</div>
+    <div style="font-size:22px;letter-spacing:6px;color:#00ff41;font-weight:900;margin-bottom:8px;" id="curation-text">WORK IN PROGRESS</div>
+    <div style="font-size:11px;letter-spacing:3px;color:#2a6a2a;margin-bot
