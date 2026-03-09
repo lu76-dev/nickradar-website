@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="nickradar — contact people you see in real life. no swiping, no algorithm. you see a nickname, you type it, you try. real world first.">
+  <meta name="keywords" content="nickradar, contacting, real life, nickname, connect, austria, no swiping">
+  <meta name="author" content="nickradar">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="nickradar — real world contacting">
+  <meta property="og:description" content="you see someone. you see their nickname. you try. no algorithm. no swiping. just real life.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nickradar.com">
+  <meta property="og:site_name" content="nickradar">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="nickradar — real world contacting">
+  <meta name="twitter:description" content="you see someone. you see their nickname. you try. real life first, digital second.">
   <title>nickradar — the nickname party.</title>
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -662,6 +674,7 @@ function showPage(id, tab) {
   if (tab) tab.classList.add('active');
   window.scrollTo(0, 0);
   if (id === 'life' && typeof lifeAnimStart === 'function') lifeAnimStart();
+  if (typeof umami !== 'undefined') umami.track('page', { name: id });
 }
 function showLegal(id, e) {
   if (e) e.preventDefault();
@@ -740,5 +753,6 @@ function showLegal(id, e) {
   lifeAnimStart = function(){ goToA(1); };
 })();
 </script>
+<script defer src="https://analytics.nickradar.com/script.js" data-website-id="00d87254-9494-4939-a633-840abf0f574b"></script>
 </body>
 </html>
